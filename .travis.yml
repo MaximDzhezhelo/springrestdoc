@@ -10,5 +10,5 @@ jdk:
 
 env:
   - TEST_DIR=springfox
-#  - TEST_DIR=restdoc
+  - TEST_DIR=swagger2markdown
 script: cd $TEST_DIR && gradle clean build test
