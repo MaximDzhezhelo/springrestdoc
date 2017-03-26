@@ -1,4 +1,4 @@
-package example.example;
+package smartjava;
 
 import org.junit.Before;
 import org.junit.Test;

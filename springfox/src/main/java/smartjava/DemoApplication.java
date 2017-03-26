@@ -1,4 +1,4 @@
-package example.example;
+package smartjava;
 
 import com.google.common.base.Predicates;
 
@@ -14,7 +14,6 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import static springfox.documentation.builders.PathSelectors.ant;
-import static springfox.documentation.builders.PathSelectors.any;
 
 @SpringBootApplication
 @EnableSwagger2
@@ -41,8 +40,8 @@ public class DemoApplication {
 
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
-				.title("Swagger Petstore")
-				.description("Petstore API Description")
+				.title("Swagger Speakers")
+				.description("Speakers API Description")
 				.contact(new Contact("Tsypuk Roman", "http://", "tsypuk.rb@gmail.com"))
 				.license("Apache 2.0")
 				.licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")

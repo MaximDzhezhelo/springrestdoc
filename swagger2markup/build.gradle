@@ -1,5 +1,5 @@
 version = '0.0.1'
-group = 'ua.in.smartjava.swaggger2markup'
+group = 'ua.in.smartjava.swagger2markup'
 
 buildscript {
 	ext {
@@ -26,14 +26,6 @@ apply plugin: 'io.github.swagger2markup'
 apply plugin: 'io.spring.dependency-management'
 
 sourceCompatibility = 1.8
-
-tasks.withType(org.gradle.api.tasks.compile.JavaCompile) {
-	sourceCompatibility = "1.8"
-	targetCompatibility = "1.8"
-	options.deprecation = true
-	options.encoding = 'UTF-8'
-	options.compilerArgs << "-Xlint:unchecked"
-}
 
 repositories {
 	jcenter()
@@ -92,14 +84,4 @@ asciidoctor {
 			generated: asciiDocOutputDir,
 			snippets: snippetsOutputDir
 	]
-}
-
-jar {
-	dependsOn asciidoctor
-	from ("${asciidoctor.outputDir}/html5") {
-		into 'static/docs'
-	}
-	from ("${asciidoctor.outputDir}/pdf") {
-		into 'static/docs'
-	}
 }

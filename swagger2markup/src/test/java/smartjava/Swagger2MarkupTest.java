@@ -35,7 +35,6 @@ public class Swagger2MarkupTest {
     @Autowired
     private MockMvc mockMvc;
 
-
     @Test
     public void createSpringfoxSwaggerJson() throws Exception {
 //        String designFirstSwaggerLocation = Swagger2MarkupTest.class.getResource("/swagger.yaml").getPath();
@@ -49,7 +48,8 @@ public class Swagger2MarkupTest {
         MockHttpServletResponse response = mvcResult.getResponse();
         String swaggerJson = response.getContentAsString();
         Files.createDirectories(Paths.get(outputDir));
-        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(outputDir, "swagger.json"), StandardCharsets.UTF_8)){
+        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(outputDir, "swagger.json"), StandardCharsets
+                .UTF_8)) {
             writer.write(swaggerJson);
         }
     }

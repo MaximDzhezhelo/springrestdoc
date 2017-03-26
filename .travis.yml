@@ -2,13 +2,7 @@ language: java
 jdk:
   - oraclejdk8
 
-#before_script:
-#    - wget http://services.gradle.org/distributions/gradle-3.3-all.zip
-#    - unzip gradle-3.3-all.zip
-#    - export GRADLE_HOME=$PWD/gradle-3.3
-#    - export PATH=$GRADLE_HOME/bin:$PATH
-
 env:
   - TEST_DIR=springfox
-  - TEST_DIR=swagger2markdown
+  - TEST_DIR=swagger2markup
 script: cd $TEST_DIR && gradle clean build test

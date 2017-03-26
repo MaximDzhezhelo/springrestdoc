@@ -1,4 +1,4 @@
-package example.example;
+package smartjava.domain.speaker;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
