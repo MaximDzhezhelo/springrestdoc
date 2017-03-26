@@ -1,4 +1,4 @@
-package com.example;
+package smartjava;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -11,7 +11,7 @@ public class Speaker {
     @ApiModelProperty(notes = "Model Name upper case without spaces", required = true)
     String name;
 
-    @Max(value = 100)
+//    @Max(value = 100)
     @ApiModelProperty(notes = "The age of person must be not more than 100", required = true)
     String age;
 

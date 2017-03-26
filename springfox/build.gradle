@@ -1,3 +1,6 @@
+version = '0.0.1'
+group = 'ua.in.smartjava.springfox'
+
 buildscript {
 	ext {
 		springBootVersion = '1.5.1.RELEASE'
@@ -13,11 +16,6 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
-
-jar {
-	baseName = 'springfox'
-	version = '0.0.1-SNAPSHOT'
-}
 
 sourceCompatibility = 1.8
 
