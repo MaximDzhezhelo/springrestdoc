@@ -1,6 +1,4 @@
 # Spring RestDoc. TestDriven Documentation.
-SpringRestDoc. Swagger. Swagger2Markdown. AsciiDoctor.
-
 ![BOOT LOGO](img/springboot.png)
 
 [![Build Status](https://travis-ci.org/tsypuk/springrestdoc.svg?branch=master)](https://travis-ci.org/tsypuk/springrestdoc)
@@ -10,3 +8,18 @@ SpringRestDoc. Swagger. Swagger2Markdown. AsciiDoctor.
 ---
 
 ## Agenda
+* SpringRestDoc.
+* Swagger.
+* Swagger2Markdown. 
+* AsciiDoctor.
+git 
+### SpringFox
+````
+http://localhost:8080/swagger-ui.html
+````
+
+### SpringRestDoc
+
+### Swagger2Markdown
+
+### AsciiDoctor is awesome
