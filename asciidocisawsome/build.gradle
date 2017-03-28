@@ -1,5 +1,5 @@
 version = '0.0.1'
-group = 'ua.in.smartjava.springfox'
+group = 'ua.in.smartjava.asciidoctor'
 
 buildscript {
 	ext {

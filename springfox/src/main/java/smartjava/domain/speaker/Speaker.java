@@ -2,49 +2,37 @@ package smartjava.domain.speaker;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.validation.constraints.Max;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
+@Entity
+@Table(name = "speakers")
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Speaker {
-    @NotEmpty
-    @ApiModelProperty(notes = "Model Name upper case without spaces", required = true)
-    String name;
 
-    @Max(value = 100)
-    @ApiModelProperty(notes = "The age of person must be not more than 100", required = true)
-    String age;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
 
     @NotEmpty
-    String company;
+    private String name;
 
-    public Speaker(String name, String age, String firm) {
-        this.name = name;
-        this.age = age;
-        this.company = firm;
-    }
+    @NotEmpty
+    private String company;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAge() {
-        return age;
-    }
-
-    public void setAge(String age) {
-        this.age = age;
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
-    }
 }
