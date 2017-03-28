@@ -14,20 +14,22 @@
 * AsciiDoctor is awesome.
 
 ### SpringFox
+
 ````
 http://localhost:8080/swagger-ui.html
 ````
 
 ### SpringRestDoc
 
-### Swagger2Markup
-
 ### AsciiDoctor is awesome
+
+### Swagger2Markup
 
 ## TODO ITEMS
 
-- [x] Create springboot app for springfox
-- [x] Create springboot app swagger2markup
+- [x] Create springboot app for springfox.
 - [ ] Create springboot app restdoc.
+- [ ] Create springboot app ascidocisawsome. To show advanced features and diagrams.
+- [x] Create springboot app swagger2markup. Migration.
 - [ ] Add build to static resource pdf/html in jar. Internal/External Docs. public to git pages.
 - [ ] Create springboot app asciidoctor is awsome.

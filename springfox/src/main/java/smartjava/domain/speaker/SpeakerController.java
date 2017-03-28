@@ -25,6 +25,7 @@ public class SpeakerController {
     @Autowired
     private SpeakerRepository speakerRepository;
 
+    //TODO mark this controller with swagger annotations. Show that it is real annotations mess.
     @GetMapping(value = "/speakers/{id}")
     @ApiOperation(value = "Get concrete speaker.")
     public ResponseEntity<SpeakerResource> getSpeaker(@PathVariable long id) {
