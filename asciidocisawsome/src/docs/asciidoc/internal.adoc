@@ -19,6 +19,7 @@ This allows to share the same formatting code accross developers machines/IDEs.
 ----
 ----
 For CodeBase we are using Oracle naming guidelines states. De-facto and De-ure industry standard. <2>
+Mysql Error codes <3>
 ----
 === Packages
 

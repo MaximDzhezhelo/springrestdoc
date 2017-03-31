@@ -6,6 +6,7 @@ buildscript {
         springBootVersion = '1.5.1.RELEASE'
         asciiDoctorPluginVersion = '1.5.3'
         asciiDoctorPdf = '1.5.0-alpha.11'
+        epubVersion = '1.5.0-alpha.6'
     }
     repositories {
         jcenter()
@@ -19,7 +20,7 @@ buildscript {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath("org.asciidoctor:asciidoctor-gradle-plugin:${asciiDoctorPluginVersion}")
-        classpath 'org.asciidoctor:asciidoctorj-epub3:1.5.0-alpha.6'
+        classpath ("org.asciidoctor:asciidoctorj-epub3:${epubVersion}")
         classpath("org.asciidoctor:asciidoctorj-pdf:${asciiDoctorPdf}")
     }
 }

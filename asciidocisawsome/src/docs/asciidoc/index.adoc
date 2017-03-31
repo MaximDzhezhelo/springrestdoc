@@ -1,3 +1,2 @@
 include::header_public.adoc[]
 include::public.adoc[]
-include::internal.adoc[]

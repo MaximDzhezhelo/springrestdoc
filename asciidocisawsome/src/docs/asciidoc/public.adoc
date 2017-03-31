@@ -8,7 +8,7 @@ v1.0, March 31, 2017
 == Rest conventions
 
 === HTTP verbs
-Ddt-service tries to adhere as closely as possible to standard HTTP and REST conventions in its
+Speakers Service tries to adhere as closely as possible to standard HTTP and REST conventions in its
 use of HTTP verbs.
 |===
 | Verb | Usage
@@ -25,7 +25,7 @@ use of HTTP verbs.
 |===
 
 === HTTP status codes
-Ddt-service tries to adhere as closely as possible to standard HTTP and REST conventions in its
+Speakers Service tries to adhere as closely as possible to standard HTTP and REST conventions in its
 use of HTTP status codes.
 
 |===
@@ -61,7 +61,7 @@ use of HTTP status codes.
 
 === Speaker
 
-==== Get all speakers
+==== Get speaker
 ===== Curl example
 include::{snippets}/speaker-controller-test/test-get-speaker/curl-request.adoc[]
 ===== Httpie example
