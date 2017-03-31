@@ -5,4 +5,5 @@ jdk:
 env:
   - TEST_DIR=springfox
   - TEST_DIR=swagger2markup
+  - TEST_DIR=asciidocisawsome
 script: cd $TEST_DIR && gradle clean build
