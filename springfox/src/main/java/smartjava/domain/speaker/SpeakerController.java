@@ -10,14 +10,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.xml.ws.Response;
-
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
+@Api(value = "/", tags = "Speakers", description = "Operations about speaker")
 @RestController
 @ExposesResourceFor(value = SpeakerResource.class)
 public class SpeakerController {
@@ -25,11 +27,20 @@ public class SpeakerController {
     @Autowired
     private SpeakerRepository speakerRepository;
 
-    //TODO mark this controller with swagger annotations. Show that it is real annotations mess.
+    @ApiOperation(
+            value = "Find speaker by ID",
+            notes = "For valid response try integer IDs with value 1 ... 999. Other values will generated exceptions",
+            response = SpeakerResource.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful retrieve the speaker.", response = SpeakerResource.class),
+            @ApiResponse(code = 400, message = "Invalid ID supplied"),
+            @ApiResponse(code = 404, message = "Speaker not found"),
+            @ApiResponse(code = 500, message = "Internal server error.")})
     @GetMapping(value = "/speakers/{id}")
-    @ApiOperation(value = "Get concrete speaker.")
-    public ResponseEntity<SpeakerResource> getSpeaker(@PathVariable long id) {
-        return Optional.ofNullable(speakerRepository.findOne(id))
+    public ResponseEntity<SpeakerResource> getSpeaker(
+            @ApiParam(value = "ID of speaker that needs to be fetched", allowableValues = "range[1,999]", required = true)
+            @PathVariable long id) {
+        return speakerRepository.findOne(id)
                 .map(speaker -> ResponseEntity.ok(new SpeakerResource(speaker)))
                 .orElse(new ResponseEntity(HttpStatus.NOT_FOUND));
     }
