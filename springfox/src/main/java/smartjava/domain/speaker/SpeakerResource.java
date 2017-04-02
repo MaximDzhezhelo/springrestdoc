@@ -19,7 +19,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @ApiModel(value = "Speaker", description = "Speaker description")
 public class SpeakerResource extends ResourceSupport {
 
-    @ApiModelProperty(value = "Name of the Speaker in full format.", dataType = "java.lang.Integer", required = true)
+    @ApiModelProperty(value = "Name of the Speaker in full format.", dataType = "java.lang.String", required = true)
     private String name;
     private String company;
 

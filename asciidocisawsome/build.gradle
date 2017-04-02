@@ -3,10 +3,7 @@ group = 'ua.in.smartjava.asciidoctor'
 
 buildscript {
     ext {
-        springBootVersion = '1.5.1.RELEASE'
         asciiDoctorPluginVersion = '1.5.3'
-        asciiDoctorPdf = '1.5.0-alpha.11'
-        epubVersion = '1.5.0-alpha.6'
     }
     repositories {
         jcenter()
@@ -17,32 +14,31 @@ buildscript {
         }
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath("org.asciidoctor:asciidoctor-gradle-plugin:${asciiDoctorPluginVersion}")
-        classpath ("org.asciidoctor:asciidoctorj-epub3:${epubVersion}")
-        classpath("org.asciidoctor:asciidoctorj-pdf:${asciiDoctorPdf}")
+        classpath 'com.github.jruby-gradle:jruby-gradle-plugin:0.1.5'
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'idea'
-apply plugin: 'org.springframework.boot'
 apply plugin: 'org.asciidoctor.convert'
+apply plugin: 'com.github.jruby-gradle.base'
 
 ext {
     snippetsDir = file('build/generated-snippets')
 }
 
 asciidoctor {
-    dependsOn test
-    backends = ['html5', 'pdf', 'epub3', 'docbook']
+    dependsOn jrubyPrepareGems
+    requires = ['asciidoctor-diagram']
+    gemPath = jrubyPrepareGems.outputDir
+    backends = ['html5']
     options doctype: 'book'
 
     attributes = [
             'source-highlighter': 'highlightjs',
             'imagesdir'         : './images',
-            'toc'               : 'left',
+            'toc'               : 'right',
             'icons'             : 'font',
             'setanchors'        : '',
             'idprefix'          : '',
@@ -57,16 +53,7 @@ asciidoctor {
     outputDir "build/asciidoc"
     sourceDir 'src/docs/asciidoc'
     sources {
-        include 'index.adoc', 'internal.adoc'
-    }
-}
-
-jar {
-    dependsOn asciidoctor
-    from("${asciidoctor.outputDir}/html5") {
-        include '**/index.html'
-        include '**/images/image.png'
-        into 'static/docs'
+        include 'index.adoc'
     }
 }
 
@@ -78,19 +65,5 @@ repositories {
 }
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile('org.springframework.boot:spring-boot-starter-hateoas')
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    compile 'com.h2database:h2:1.4.194'
-    compile('org.projectlombok:lombok')
-
-    testCompile('org.springframework.boot:spring-boot-starter-test')
-    testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
-    testCompile('com.jayway.jsonpath:json-path')
-}
-
-task publish(type: GradleBuild) {
-    dependsOn asciidoctor
-    buildFile = file('publish.gradle')
-    tasks = ['publishGhPages']
+    gems 'rubygems:asciidoctor-diagram:1.2.0'
 }

@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @AutoConfigureRestDocs(outputDir = "build/asciidoc/snippets")
-@SpringBootTest(classes = {DemoApplication.class, SwaggerConfig.class})
+@SpringBootTest(classes = {Swagger2MarkupApplication.class, SwaggerConfig.class})
 @AutoConfigureMockMvc
 public class Swagger2MarkupTest {
 

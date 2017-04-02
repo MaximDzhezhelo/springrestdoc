@@ -9,3 +9,7 @@ gradle*
 *.iws
 *.iml
 *.ipr
+
+### Asciidoctor
+.asciidoctor
+asciidoc/images

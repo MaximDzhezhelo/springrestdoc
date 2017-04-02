@@ -16,12 +16,12 @@ import static org.springframework.hateoas.config.EnableHypermediaSupport.Hyperme
 
 @SpringBootApplication
 @EnableHypermediaSupport(type = HAL)
-public class DemoApplication {
+public class RestDocsApplication {
 
     private static final String SPRING_HATEOAS_OBJECT_MAPPER = "_halObjectMapper";
 
     public static void main(String[] args) {
-        SpringApplication.run(DemoApplication.class, args);
+        SpringApplication.run(RestDocsApplication.class, args);
     }
 
     @Autowired

@@ -8,7 +8,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.MediaTypes;
-import org.springframework.http.MediaType;
+import org.springframework.restdocs.JUnitRestDocumentation;
+import org.springframework.restdocs.constraints.ConstraintDescriptions;
+import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -17,16 +19,29 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.restdocs.JUnitRestDocumentation;
+
+import java.util.stream.Collectors;
 
 import smartjava.TestDataGenerator;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.endsWith;
+import static org.junit.Assert.assertEquals;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.halLinks;
+import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
+import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.options;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.snippet.Attributes.attributes;
+import static org.springframework.restdocs.snippet.Attributes.key;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -82,11 +97,12 @@ public class SpeakerControllerTest {
                                 fieldWithPath("company").description("The company where speaker is working on."),
                                 fieldWithPath("_links").description("Link section."),
                                 fieldWithPath("_links.self.href").description("Link to self section.")
-                        )));
+                        ),
+                        links(halLinks(), linkWithRel("self").description("Link to self section."))));
     }
 
     @Test
-    public void testAllSpeakers() throws Exception {
+    public void testGetAllSpeakers() throws Exception {
         //Given
         Speaker josh = given.speaker("Josh Long").company("Pivotal").save();
         Speaker venkat = given.speaker("Venkat Subramaniam").company("Agile").save();
@@ -97,11 +113,72 @@ public class SpeakerControllerTest {
 
         //Then
         action.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());
+        action.andDo(document("{class-name}/{method-name}",
+                responseFields(
+                        fieldWithPath("_embedded").description("'speakers' array with Speakers resources."),
+                        fieldWithPath("_embedded.speakers").description("Array with returned Speaker resources."),
+                        fieldWithPath("_embedded.speakers[].name").description("Speaker's name."),
+                        fieldWithPath("_embedded.speakers[]._links").description("Link section."),
+                        fieldWithPath("_embedded.speakers[]._links.self.href").description("Link to self section.")
+                ),
+                links(halLinks(), linkWithRel("_embedded.speakers[]._links.self").description("Link to self section."))
+                ));
     }
 
     @Test
     public void testDeleteSpeaker() throws Exception {
 
+    }
+
+    @Test
+    public void testCreateSpeaker_created() throws Exception {
+        // Given
+        SpeakerDto requestDto = given.speakerDto("Josh Long").company("Pivotal").build();
+        String requestBody = given.asJsonString(requestDto);
+
+        // When
+        ResultActions action = mockMvc.perform(post("/speakers")
+                .content(requestBody))
+                .andDo(MockMvcResultHandlers.print());
+
+        // Then
+        assertEquals(1, speakerRepository.count());
+        Speaker savedSpeaker = speakerRepository.findByName("Josh Long").get();
+
+        assertEquals(requestDto.getName(), savedSpeaker.getName());
+        assertEquals(requestDto.getCompany(), savedSpeaker.getCompany());
+
+        action.andExpect(status().isCreated())
+                .andExpect(header().string("Location", endsWith("/speakers/" + savedSpeaker.getId())));
+
+        ConstrainedFields fields = new ConstrainedFields(SpeakerDto.class);
+
+        action.andDo(document("{class-name}/{method-name}",
+                requestFields(
+                        attributes(key("title").value("SpeakerDTO")),
+                        fields.withName("name").description("The speaker's name."),
+                        fields.withName("company").description("The company speaker is working on.")
+                ),
+                responseHeaders(
+                        headerWithName("Location").description("URI path to created resource.")
+                )));
+    }
+
+    private static class ConstrainedFields {
+
+        private final ConstraintDescriptions constraintDescriptions;
+
+        ConstrainedFields(Class<?> input) {
+            this.constraintDescriptions = new ConstraintDescriptions(input);
+        }
+
+        private FieldDescriptor withName(String path) {
+            return fieldWithPath(path).attributes(key("constraints").value(
+                    this.constraintDescriptions
+                            .descriptionsForProperty(path).stream()
+                            .collect(Collectors.joining(". "))
+            ));
+        }
     }
 
 }

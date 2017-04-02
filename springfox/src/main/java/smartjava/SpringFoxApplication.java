@@ -66,7 +66,7 @@ public class SpringFoxApplication {
 		return new ApiInfoBuilder()
 				.title("Swagger Speakers")
 				.description("Speakers API Description")
-				.contact(new Contact("Tsypuk Roman", "http://", "tsypuk.rb@gmail.com"))
+				.contact(new Contact("Tsypuk Roman", "https://tsypuk.github.io/springrestdoc", "tsypuk.rb@gmail.com"))
 				.license("Apache 2.0")
 				.licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
 				.version("1.0.0")

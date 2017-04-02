@@ -8,9 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import io.swagger.annotations.Api;
@@ -51,6 +52,16 @@ public class SpeakerController {
         return new Resources(speakerRepository.findAll().stream()
                 .map(SpeakerResource::new)
                 .collect(Collectors.toList()));
+    }
+
+    @PostMapping(value = "/speakers/{id}")
+    public ResponseEntity<SpeakerResource> createSpeaker(@PathVariable long id) {
+        return null;
+    }
+
+    @PutMapping(value = "/speakers/{id}")
+    public void updateSpeaker(@PathVariable long id) {
+
     }
 
     @DeleteMapping(value = "speakers/{$id}")

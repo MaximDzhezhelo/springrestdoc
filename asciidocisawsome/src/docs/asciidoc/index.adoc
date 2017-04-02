@@ -1,2 +1,153 @@
-include::header_public.adoc[]
-include::public.adoc[]
+= Sample diagram
+
+:imagesdir: images
+
+== Lets create DB schema
+
+[ditaa, "Speaker database table"]
+....
+    +----------+
+    | tableName|
+    +----------+
+    | id       |
+    | name     |
+    | topic    |
+    |          |
+    +----------+
+....
+== Relation between Tables
+[ditaa, "Relation"]
+....
+    +----------+
+    | table1   |
+    +----------+ 1
+    | id       |<---+
+    | name     |    |
+    | topic    |    |
+    |          |    |
+    +----------+    |   +----------+
+                    |   | table2   |
+                    |   +----------+
+                    | * | id       |
+                    +-->| FK_table1|
+                        | topic    |
+                        |          |
+                        +----------+
+....
+== Process diagram
+[ditaa, "asciidoctor-diagram-process"]
+....
+                   +-------------+
+                   | Asciidoctor |-------+
+                   |   diagram   |       |
+                   +-------------+       | PNG out
+                       ^                 |
+                       | ditaa in        |
+                       |                 v
+ +--------+   +--------+----+    /---------------\
+ |        |---+ Asciidoctor +--->|               |
+ |  Text  |   +-------------+    |   Beautiful   |
+ |Document|   |   !magic!   |    |    Output     |
+ |     {d}|   |             |    |               |
+ +---+----+   +-------------+    \---------------/
+     :                                   ^
+     |          Lots of work             |
+     +-----------------------------------+
+....
+== Edge
+[ditaa, "edge"]
+....
++---------+
+| cBLU    |
+|  text   |
+|    +----+
+|    |cPNK|
+|    |    |
++----+----+
+....
+== Colors in primitive blocks
+This is example of creating the primitive blocks with
+specifying the fill color code.
+
+[ditaa, color]
+....
+/----\ /----\
+|c33F| |cC02|
+|    | |    |
+\----/ \----/
+
+/----\ /----\
+|c1FF| |c1AB|
+|    | |    |
+\----/ \----/
+....
+
+== Color Codes
+Also we can specify the color on text format or in hex.
+[ditaa, color codes]
+....
+/-------------+-------------\
+|cRED RED     |cBLU BLU     |
++-------------+-------------+
+|cGRE GRE     |cPNK PNK     |
++-------------+-------------+
+|cBLK BLK     |cYEL YEL     |
+\-------------+-------------/
+....
+
+== Tags
+Tags can change the figure display format.
+[ditaa, Tags]
+....
++-----+
+|{d}  |
+|     |
+|     |
++-----+
+
++-----+
+|{s}  |
+|     |
+|     |
++-----+
+
++-----+
+|{io} |
+|     |
+|     |
++-----+
+....
+
+== Lines
+Adding : we are creating the break-line.
+[ditaa, lines]
+....
+----+  /----\  +----+
+    :  |    |  :    |
+    |  |    |  |{s} |
+    v  \-=--+  +----+
+....
+
+== Points market
+'*' creates point markers
+[ditaa, Point markers]
+....
+*----*
+|    |      /--*
+*    *      |
+|    |  -*--+
+*----*
+....
+
+== Text handling
+[ditaa, Text handling]
+....
+/-----------------\
+| Things to do    |
+| cGRE            |
+| o Cut the grass |
+| o Buy jam       |
+| o Fix car       |
+| o Make website  |
+\-----------------/
+....
