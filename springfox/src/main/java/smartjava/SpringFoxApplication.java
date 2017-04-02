@@ -26,12 +26,12 @@ import static springfox.documentation.builders.PathSelectors.ant;
 @SpringBootApplication
 @EnableSwagger2
 @EnableHypermediaSupport(type = HAL)
-public class DemoApplication {
+public class SpringFoxApplication {
 
 	private static final String SPRING_HATEOAS_OBJECT_MAPPER = "_halObjectMapper";
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(SpringFoxApplication.class, args);
 	}
 
 	@Autowired
