@@ -120,9 +120,7 @@ public class SpeakerControllerTest {
                         fieldWithPath("_embedded.speakers[].name").description("Speaker's name."),
                         fieldWithPath("_embedded.speakers[]._links").description("Link section."),
                         fieldWithPath("_embedded.speakers[]._links.self.href").description("Link to self section.")
-                ),
-                links(halLinks(), linkWithRel("_embedded.speakers[]._links.self").description("Link to self section."))
-                ));
+                )));
     }
 
     @Test
