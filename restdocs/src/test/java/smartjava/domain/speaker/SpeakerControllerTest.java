@@ -15,7 +15,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -40,6 +39,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.snippet.Attributes.attributes;
 import static org.springframework.restdocs.snippet.Attributes.key;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -89,7 +89,7 @@ public class SpeakerControllerTest {
                 MockMvcRequestBuilders.get("/speakers/{id}", josh.getId()).accept(MediaTypes.HAL_JSON));
 
         //Then
-        action.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());
+        action.andDo(print()).andExpect(MockMvcResultMatchers.status().isOk());
         action.andDo(
                 document("{class-name}/{method-name}",
                         responseFields(
@@ -112,7 +112,7 @@ public class SpeakerControllerTest {
                 MockMvcRequestBuilders.get("/speakers").accept(MediaTypes.HAL_JSON));
 
         //Then
-        action.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());
+        action.andDo(print()).andExpect(MockMvcResultMatchers.status().isOk());
         action.andDo(document("{class-name}/{method-name}",
                 responseFields(
                         fieldWithPath("_embedded").description("'speakers' array with Speakers resources."),
@@ -137,7 +137,7 @@ public class SpeakerControllerTest {
         // When
         ResultActions action = mockMvc.perform(post("/speakers")
                 .content(requestBody))
-                .andDo(MockMvcResultHandlers.print());
+                .andDo(print());
 
         // Then
         assertEquals(1, speakerRepository.count());
@@ -149,17 +149,33 @@ public class SpeakerControllerTest {
         action.andExpect(status().isCreated())
                 .andExpect(header().string("Location", endsWith("/speakers/" + savedSpeaker.getId())));
 
-        ConstrainedFields fields = new ConstrainedFields(SpeakerDto.class);
+        ConstrainedFields constrainedFields = new ConstrainedFields(SpeakerDto.class);
 
         action.andDo(document("{class-name}/{method-name}",
                 requestFields(
                         attributes(key("title").value("SpeakerDTO")),
-                        fields.withName("name").description("The speaker's name."),
-                        fields.withName("company").description("The company speaker is working on.")
+                        constrainedFields.name("name").description("The speaker's name."),
+                        constrainedFields.name("company").description("The company speaker is working on.")
                 ),
                 responseHeaders(
                         headerWithName("Location").description("URI path to created resource.")
                 )));
+    }
+
+    @Test
+    public void testCreateSpeaker_conflict() throws Exception {
+        //Given
+        Speaker josh = given.speaker("Josh Long").company("Pivotal").save();
+        String requestBody = given.asJsonString(given.speakerDto("Josh Long").company("Pivotal").build());
+
+        //When
+        ResultActions action = mockMvc.perform(post("/speakers")
+                .content(requestBody));
+        action.andDo(print());
+
+        //Then
+        assertEquals(1, speakerRepository.count());
+        action.andExpect(status().isConflict());
     }
 
     private static class ConstrainedFields {
@@ -170,7 +186,7 @@ public class SpeakerControllerTest {
             this.constraintDescriptions = new ConstraintDescriptions(input);
         }
 
-        private FieldDescriptor withName(String path) {
+        private FieldDescriptor name(String path) {
             return fieldWithPath(path).attributes(key("constraints").value(
                     this.constraintDescriptions
                             .descriptionsForProperty(path).stream()

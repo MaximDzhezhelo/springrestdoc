@@ -28,8 +28,8 @@ http://localhost:8080/swagger-ui.html
 ## TODO ITEMS
 
 - [x] Create springboot app for springfox (swagger annotations).
-- [ ] Create springboot app restdoc.
-- [ ] Create springboot app ascidocisawsome. To show advanced features and diagrams.
+- [x] Create springboot app restdoc.
+- [x] Create springboot app ascidocisawsome. To show advanced features and diagrams.
 - [x] Create springboot app swagger2markup. Migration.
 - [x] Add build to static resource pdf/html in jar. 
 - [x] Internal/External Docs. public to git pages.

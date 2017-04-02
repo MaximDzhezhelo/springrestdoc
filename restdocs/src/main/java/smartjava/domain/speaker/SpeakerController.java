@@ -3,19 +3,24 @@ package smartjava.domain.speaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.util.stream.Collectors;
+
+import smartjava.exception.DuplicateEntityException;
 
 @RestController
 @ExposesResourceFor(value = SpeakerResource.class)
@@ -41,13 +46,23 @@ public class SpeakerController {
 
     @PostMapping(value = "/speakers")
     public ResponseEntity<SpeakerResource> createSpeaker(@Validated @RequestBody SpeakerDto speakerDto) {
-        Speaker savedSpeaker = speakerRepository.save(speakerDto.createSpeaker());
-        Link linkToTestStep = new SpeakerResource(savedSpeaker).getLink(Link.REL_SELF);
-        return ResponseEntity.created(URI.create(linkToTestStep.getHref())).build();
+        if (!speakerRepository.findByName(speakerDto.getName()).isPresent()) {
+            Speaker savedSpeaker = speakerRepository.save(speakerDto.createSpeaker());
+            Link linkToTestStep = new SpeakerResource(savedSpeaker).getLink(Link.REL_SELF);
+            return ResponseEntity.created(URI.create(linkToTestStep.getHref())).build();
+        } else {
+            throw new DuplicateEntityException(Speaker.class, speakerDto.getName());
+        }
     }
 
     @DeleteMapping(value = "speakers/{$id}")
     public void deleteSpeaker(@PathVariable long id) {
         speakerRepository.delete(id);
+    }
+
+    @ExceptionHandler(value = {DuplicateEntityException.class})
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Resource handleDuplicateEntityException(DuplicateEntityException ex) {
+        return new Resource(ex.getMessage());
     }
 }
