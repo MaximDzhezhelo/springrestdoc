@@ -1,6 +1,6 @@
 include::{generated}/overview.adoc[]
 include::description.adoc[]
-include::convention.adoc[]
 include::{generated}/paths.adoc[]
+include::convention.adoc[]
 include::{generated}/security.adoc[]
 include::{generated}/definitions.adoc[]

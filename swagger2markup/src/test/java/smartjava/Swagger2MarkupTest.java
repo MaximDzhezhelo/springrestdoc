@@ -37,8 +37,6 @@ public class Swagger2MarkupTest {
 
     @Test
     public void createSpringfoxSwaggerJson() throws Exception {
-//        String designFirstSwaggerLocation = Swagger2MarkupTest.class.getResource("/swagger.yaml").getPath();
-
         String outputDir = System.getProperty("io.springfox.staticdocs.outputDir");
         MvcResult mvcResult = this.mockMvc.perform(get("/v2/api-docs")
                 .accept(MediaType.APPLICATION_JSON))
@@ -54,4 +52,22 @@ public class Swagger2MarkupTest {
         }
     }
 
+/*
+    @Test
+    public void testToFolder() throws IOException, URISyntaxException {
+        //Given
+        Path file = Paths.get(Swagger2MarkupTest.class.getResource("/yaml/swagger.yaml").toURI());
+        Path outputDirectory = Paths.get("build/test/markdown/to_folder");
+//        FileUtils.deleteQuietly(outputDirectory.toFile());
+
+        //When
+        Swagger2MarkupConfig config = new Swagger2MarkupConfigBuilder()
+                .withMarkupLanguage(MarkupLanguage.MARKDOWN)
+                .build();
+        Swagger2MarkupConverter.from(file)
+                .withConfig(config)
+                .build()
+                .toFolder(outputDirectory);
+    }
+*/
 }
