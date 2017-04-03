@@ -8,6 +8,7 @@ import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,9 +19,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import smartjava.exception.DuplicateEntityException;
+import smartjava.exception.ValidationErrorResource;
+
+import static java.util.stream.Collectors.toList;
 
 @RestController
 @ExposesResourceFor(value = SpeakerResource.class)
@@ -30,8 +35,7 @@ public class SpeakerController {
     private SpeakerRepository speakerRepository;
 
     @GetMapping(value = "/speakers/{id}")
-    public ResponseEntity<SpeakerResource> getSpeaker(
-            @PathVariable long id) {
+    public ResponseEntity<SpeakerResource> getSpeaker(@PathVariable long id) {
         return speakerRepository.findOne(id)
                 .map(speaker -> ResponseEntity.ok(new SpeakerResource(speaker)))
                 .orElse(new ResponseEntity(HttpStatus.NOT_FOUND));
@@ -64,5 +68,16 @@ public class SpeakerController {
     @ResponseStatus(HttpStatus.CONFLICT)
     public Resource handleDuplicateEntityException(DuplicateEntityException ex) {
         return new Resource(ex.getMessage());
+    }
+
+    @ExceptionHandler(value = {MethodArgumentNotValidException.class})
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public Resources<ValidationErrorResource> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+        List<ValidationErrorResource> validationErrors = ex.getBindingResult().getFieldErrors()
+                .stream()
+                .map(ValidationErrorResource::new)
+                .collect(toList());
+
+        return new Resources<>(validationErrors);
     }
 }

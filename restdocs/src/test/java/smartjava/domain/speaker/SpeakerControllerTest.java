@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 import smartjava.TestDataGenerator;
 
 import static org.hamcrest.CoreMatchers.endsWith;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
@@ -41,6 +42,7 @@ import static org.springframework.restdocs.snippet.Attributes.attributes;
 import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -66,7 +68,9 @@ public class SpeakerControllerTest {
     @Before
     public void setUp() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
-                .apply(documentationConfiguration(this.restDocumentation))
+                .apply(documentationConfiguration(this.restDocumentation).uris()
+                        .withScheme("https")
+                        .withHost("mydomain.com"))
                 .defaultRequest(options("/")
                         .accept(HAL_JSON_CHARSET_UTF_8)
                         .contentType(HAL_JSON_CHARSET_UTF_8))
@@ -158,8 +162,7 @@ public class SpeakerControllerTest {
                         constrainedFields.name("company").description("The company speaker is working on.")
                 ),
                 responseHeaders(
-                        headerWithName("Location").description("URI path to created resource.")
-                )));
+                        headerWithName("Location").description("URI path to created resource."))));
     }
 
     @Test
@@ -169,13 +172,43 @@ public class SpeakerControllerTest {
         String requestBody = given.asJsonString(given.speakerDto("Josh Long").company("Pivotal").build());
 
         //When
-        ResultActions action = mockMvc.perform(post("/speakers")
-                .content(requestBody));
+        ResultActions action = mockMvc.perform(post("/speakers").content(requestBody));
         action.andDo(print());
 
         //Then
         assertEquals(1, speakerRepository.count());
         action.andExpect(status().isConflict());
+        action.andExpect(jsonPath("content", is("Entity  Speaker with name 'Josh Long' already present in DB.")));
+        action.andDo(document("{class-name}/{method-name}",
+                responseFields(
+                        fieldWithPath("content").description("Errors that was found during validation.")
+                )));
+    }
+
+    @Test
+    public void testCreateSpeaker_validationFails() throws Exception {
+        //Given
+        Speaker josh = given.speaker("Josh Long").company("Pivotal").save();
+        String requestBody = given.asJsonString(given.speakerDto("Josh Long").build());
+
+        //When
+        ResultActions action = mockMvc.perform(post("/speakers").content(requestBody));
+        action.andDo(print());
+
+        //Then
+        assertEquals(1, speakerRepository.count());
+        action.andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$._embedded.length()", is(1)))
+                .andExpect(jsonPath("$._embedded.validationErrors[0].property", is("company")))
+                .andExpect(jsonPath("$._embedded.validationErrors[0].message", is("may not be empty")))
+                .andExpect(jsonPath("$._embedded.validationErrors[0].invalidValue", is("null")));
+
+        action.andDo(document("{class-name}/{method-name}",
+                responseFields(
+                        fieldWithPath("_embedded.validationErrors").description("Errors that were found during validation."),
+                        fieldWithPath("_embedded.validationErrors[].property").description("Invalid property name of posted json entity."),
+                        fieldWithPath("_embedded.validationErrors[].message").description("The message, extracted from validation provider exception."),
+                        fieldWithPath("_embedded.validationErrors[].invalidValue").description("Invalid value that had not passed validation"))));
     }
 
     private static class ConstrainedFields {
@@ -190,8 +223,7 @@ public class SpeakerControllerTest {
             return fieldWithPath(path).attributes(key("constraints").value(
                     this.constraintDescriptions
                             .descriptionsForProperty(path).stream()
-                            .collect(Collectors.joining(". "))
-            ));
+                            .collect(Collectors.joining(". "))));
         }
     }
 
