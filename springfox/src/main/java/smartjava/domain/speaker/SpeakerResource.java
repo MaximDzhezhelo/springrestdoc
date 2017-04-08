@@ -16,16 +16,33 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @AllArgsConstructor
 @Getter
 @Relation(value = "speaker", collectionRelation = "speakers")
-@ApiModel(value = "Speaker", description = "Speaker description")
+@ApiModel(value = "Speaker Resource", description = "Speaker detailed description.")
 public class SpeakerResource extends ResourceSupport {
 
-    @ApiModelProperty(value = "Name of the Speaker in full format.", dataType = "java.lang.String", required = true)
+    @ApiModelProperty(value = "Name of the Speaker in full format.",
+            example = "Roman Tsypuk",
+            dataType = "java.lang.String",
+            required = true)
     private String name;
+
+    @ApiModelProperty(value = "The company that speaker is working on.",
+            example = "Lohika",
+            dataType = "java.lang.String",
+            required = true,
+            allowableValues = "Full company names.")
     private String company;
+
+    @ApiModelProperty(value = "Current status.",
+            example = "I like Spring & Rest Docs.",
+            dataType = "java.lang.String",
+            required = true,
+            allowableValues = "Only positive :)")
+    private String status;
 
     public SpeakerResource(Speaker speaker) {
         this.name = speaker.getName();
         this.company = speaker.getCompany();
+        this.status = "I like Spring & Rest Docs.";
         add(linkTo(methodOn(SpeakerController.class).getSpeaker(speaker.getId())).withSelfRel());
     }
 }

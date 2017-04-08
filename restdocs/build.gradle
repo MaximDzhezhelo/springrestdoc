@@ -90,7 +90,7 @@ dependencies {
 }
 
 task publish(type: GradleBuild) {
-    dependsOn asciidoctor
+//    dependsOn asciidoctor
     buildFile = file('publish.gradle')
     tasks = ['publishGhPages']
 }

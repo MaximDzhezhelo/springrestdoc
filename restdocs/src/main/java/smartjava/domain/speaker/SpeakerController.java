@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 import smartjava.exception.DuplicateEntityException;
 import smartjava.exception.ValidationErrorResource;
 
+import static java.util.stream.Collectors.*;
 import static java.util.stream.Collectors.toList;
 
 @RestController
@@ -45,7 +46,7 @@ public class SpeakerController {
     public Resources<SpeakerResource> getAllSpeakers() {
         return new Resources(speakerRepository.findAll().stream()
                 .map(SpeakerResource::new)
-                .collect(Collectors.toList()));
+                .collect(toList()));
     }
 
     @PostMapping(value = "/speakers")

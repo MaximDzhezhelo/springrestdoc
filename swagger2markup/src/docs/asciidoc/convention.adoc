@@ -1,3 +1,0 @@
-== Code convention
-
-Here we are adding code convention

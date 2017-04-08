@@ -1,6 +1,12 @@
-include::{generated}/overview.adoc[]
-include::description.adoc[]
-include::{generated}/paths.adoc[]
-include::convention.adoc[]
-include::{generated}/security.adoc[]
+include::old/definitions.adoc[]
+include::old/security.adoc[]
+include::old/overview.adoc[]
+include::old/paths.adoc[]
+
+
 include::{generated}/definitions.adoc[]
+include::{generated}/security.adoc[]
+include::{generated}/overview.adoc[]
+include::{generated}/paths.adoc[]
+//include::description.adoc[]
+//include::convention.adoc[]

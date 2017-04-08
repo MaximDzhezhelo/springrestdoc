@@ -1,6 +1,5 @@
 include::header_internal.adoc[]
 include::public.adoc[]
-
 == Application settings
 
 === Profiles setting

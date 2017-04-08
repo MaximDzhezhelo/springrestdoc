@@ -5,6 +5,9 @@ v1.0, March 31, 2017
 == Terminology
 * This is demo application of usage Spring RestDocs and asciidoctor.
 
+//== Test Driven Documentation with Spring Rest Docs
+//include::conference.adoc[]
+
 == Rest conventions
 
 === HTTP verbs
