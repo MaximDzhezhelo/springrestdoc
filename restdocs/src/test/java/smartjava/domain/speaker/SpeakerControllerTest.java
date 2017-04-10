@@ -14,7 +14,6 @@ import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -40,6 +39,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.snippet.Attributes.attributes;
 import static org.springframework.restdocs.snippet.Attributes.key;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -86,14 +86,17 @@ public class SpeakerControllerTest {
     public void testGetSpeaker() throws Exception {
         //Given
         Speaker josh = given.speaker("Josh Long").company("Pivotal").save();
-        Speaker dummyRecord = given.speaker("NONE").company("NONE").save();
+        Speaker noiseData = given.speaker("Noise").company("Noise").save();
 
         //When
         ResultActions action = mockMvc.perform(
-                MockMvcRequestBuilders.get("/speakers/{id}", josh.getId()).accept(MediaTypes.HAL_JSON));
+                get("/speakers/{id}", josh.getId()).accept(MediaTypes.HAL_JSON));
 
         //Then
-        action.andDo(print()).andExpect(MockMvcResultMatchers.status().isOk());
+        action.andDo(print()).andExpect(status().isOk());
+        action.andExpect(jsonPath("$.name", is(josh.getName())))
+                .andExpect(jsonPath("$.company", is(josh.getCompany())));
+
         action.andDo(
                 document("{class-name}/{method-name}",
                         responseFields(
@@ -113,10 +116,10 @@ public class SpeakerControllerTest {
 
         //When
         ResultActions action = mockMvc.perform(
-                MockMvcRequestBuilders.get("/speakers").accept(MediaTypes.HAL_JSON));
+                get("/speakers").accept(MediaTypes.HAL_JSON));
 
         //Then
-        action.andDo(print()).andExpect(MockMvcResultMatchers.status().isOk());
+        action.andDo(print()).andExpect(status().isOk());
         action.andDo(document("{class-name}/{method-name}",
                 responseFields(
                         fieldWithPath("_embedded").description("'speakers' array with Speakers resources."),
@@ -205,10 +208,14 @@ public class SpeakerControllerTest {
 
         action.andDo(document("{class-name}/{method-name}",
                 responseFields(
-                        fieldWithPath("_embedded.validationErrors").description("Errors that were found during validation."),
-                        fieldWithPath("_embedded.validationErrors[].property").description("Invalid property name of posted json entity."),
-                        fieldWithPath("_embedded.validationErrors[].message").description("The message, extracted from validation provider exception."),
-                        fieldWithPath("_embedded.validationErrors[].invalidValue").description("Invalid value that had not passed validation"))));
+                        fieldWithPath("_embedded.validationErrors").description("Errors that were found during " +
+                                "validation."),
+                        fieldWithPath("_embedded.validationErrors[].property").description("Invalid property name of " +
+                                "posted json entity."),
+                        fieldWithPath("_embedded.validationErrors[].message").description("The message, extracted " +
+                                "from validation provider exception."),
+                        fieldWithPath("_embedded.validationErrors[].invalidValue").description("Invalid value that " +
+                                "had not passed validation"))));
     }
 
     private static class ConstrainedFields {

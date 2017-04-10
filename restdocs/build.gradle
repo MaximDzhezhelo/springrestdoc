@@ -18,7 +18,6 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath("org.asciidoctor:asciidoctor-gradle-plugin:${asciiDoctorPluginVersion}")
         classpath ("org.asciidoctor:asciidoctorj-epub3:${epubVersion}")
         classpath("org.asciidoctor:asciidoctorj-pdf:${asciiDoctorPdf}")

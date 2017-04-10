@@ -46,7 +46,7 @@ public class Swagger2MarkupTest {
     private MockMvc mockMvc;
 
     @Test
-    public void createSpringfoxSwaggerJson() throws Exception {
+    public void createSpringfoxSwaggerJsonEndpoint() throws Exception {
         String outputDir = System.getProperty("io.springfox.staticdocs.outputDir");
         MvcResult mvcResult = this.mockMvc.perform(get("/v2/api-docs")
                 .accept(MediaType.APPLICATION_JSON))
@@ -114,6 +114,25 @@ public class Swagger2MarkupTest {
                 .withPathsGroupedBy(GroupBy.TAGS)
                 .withOutputLanguage(Language.EN)
                 .withMarkupLanguage(MarkupLanguage.CONFLUENCE_MARKUP)
+                .build();
+
+        Swagger2MarkupConverter.from(file)
+                .withConfig(config)
+                .build()
+                .toFolder(outputDirectory);
+    }
+
+    @Test
+    public void testJsonLocalFile() throws IOException, URISyntaxException {
+        //Given
+        Path file = Paths.get(Swagger2MarkupTest.class.getResource("/json/swagger.json").toURI());
+        Path outputDirectory = Paths.get("build/test/json/to_folder");
+        FileUtils.deleteQuietly(outputDirectory.toFile());
+
+        //When
+        Swagger2MarkupConfig config = new Swagger2MarkupConfigBuilder()
+                .withOutputLanguage(Language.EN)
+                .withMarkupLanguage(MarkupLanguage.ASCIIDOC)
                 .build();
 
         Swagger2MarkupConverter.from(file)

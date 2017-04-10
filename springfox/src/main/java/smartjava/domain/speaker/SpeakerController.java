@@ -39,7 +39,9 @@ public class SpeakerController {
             @ApiResponse(code = 500, message = "Internal server error.")})
     @GetMapping(value = "/speakers/{id}")
     public ResponseEntity<SpeakerResource> getSpeaker(
-            @ApiParam(value = "ID of speaker that needs to be fetched", allowableValues = "range[1,999]", required = true)
+            @ApiParam(value = "ID of speaker that needs to be fetched",
+                    allowableValues = "range[1,999]",
+                    required = true)
             @PathVariable long id) {
         return speakerRepository.findOne(id)
                 .map(speaker -> ResponseEntity.ok(new SpeakerResource(speaker)))
@@ -47,7 +49,6 @@ public class SpeakerController {
     }
 
     @GetMapping(value = "/speakers")
-    @ApiOperation(value = "Get all speakers.")
     public Resources<SpeakerResource> allSpeakers() {
         return new Resources(speakerRepository.findAll().stream()
                 .map(SpeakerResource::new)
@@ -64,8 +65,7 @@ public class SpeakerController {
 
     }
 
-    @DeleteMapping(value = "speakers/{$id}")
-    @ApiOperation(value = "Delete speaker.")
+    @DeleteMapping(value = "/speakers/{id}")
     public void deleteSpeaker(@PathVariable long id) {
         speakerRepository.delete(id);
     }
