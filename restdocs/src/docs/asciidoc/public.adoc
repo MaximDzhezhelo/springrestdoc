@@ -1,5 +1,5 @@
 = Speakers Service Guide
-Roman Tsypuk <tsypuk.rb@gmail.com>
+Roman Tsypuk <tsypuk.conf@gmail.com>
 v1.0, March 31, 2017
 
 == Terminology
