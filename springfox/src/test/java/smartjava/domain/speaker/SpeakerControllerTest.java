@@ -73,7 +73,7 @@ public class SpeakerControllerTest {
                 .andDo(print())
                 .andExpect(jsonPath("$.name", is("Josh Long")));
 
-        actions.andExpect(jsonPath("$.status", is("I like Spring & Rest Docs")));
+        actions.andExpect(jsonPath("$.status", is("I like Spring & Rest Docs.")));
 
 //        action.andDo(MockMvcResultHandlers.print())
 //                .andExpect(MockMvcResultMatchers.status().isOk());
