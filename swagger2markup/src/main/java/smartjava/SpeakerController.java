@@ -19,7 +19,7 @@ import io.swagger.annotations.ApiResponses;
 @Api(value = "/", tags = "Speakers", description = "Operations about speaker")
 public class SpeakerController {
 
-    @RequestMapping(value = "/speaker/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/speakers/{id}", method = RequestMethod.GET)
     @ApiOperation(
             value = "Find speaker by ID",
             notes = "For valid response try integer IDs with value <= 5 or > 10. Other values will generated exceptions",

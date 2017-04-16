@@ -1,6 +1,14 @@
 
 [[_paths]]
 == Resources
+=== Speaker
+==== Get Speaker
+===== Curl request
+include::{snippets}/speaker-controller-test/test-all-speakers/curl-request.adoc[]
+===== Http request
+include::{snippets}/speaker-controller-test/test-all-speakers/http-request.adoc[]
+===== Http response
+include::{snippets}/speaker-controller-test/test-all-speakers/http-response.adoc[]
 
 [[_pet_resource]]
 === Pet

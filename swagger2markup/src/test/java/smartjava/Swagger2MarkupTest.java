@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-@AutoConfigureRestDocs(outputDir = "build/asciidoc/snippets")
+@AutoConfigureRestDocs(outputDir = "build/generated-snippets")
 @SpringBootTest(classes = {Swagger2MarkupApplication.class, SwaggerConfig.class})
 @AutoConfigureMockMvc
 public class Swagger2MarkupTest {
@@ -46,7 +46,7 @@ public class Swagger2MarkupTest {
     private MockMvc mockMvc;
 
     @Test
-    public void createSpringfoxSwaggerJsonEndpoint() throws Exception {
+    public void fromSpringFoxEndpoint() throws Exception {
         String outputDir = System.getProperty("io.springfox.staticdocs.outputDir");
         MvcResult mvcResult = this.mockMvc.perform(get("/v2/api-docs")
                 .accept(MediaType.APPLICATION_JSON))
@@ -66,7 +66,7 @@ public class Swagger2MarkupTest {
     public void testAsciiDoc() throws IOException, URISyntaxException {
         //Given
         Path file = Paths.get(Swagger2MarkupTest.class.getResource("/yaml/swagger.yaml").toURI());
-        Path outputDirectory = Paths.get("build/test/asciidoc/to_folder");
+        Path outputDirectory = Paths.get("build/test/asciidoc-from-yaml/to_folder");
         FileUtils.deleteQuietly(outputDirectory.toFile());
 
         //When
@@ -86,7 +86,7 @@ public class Swagger2MarkupTest {
     public void testMarkup() throws IOException, URISyntaxException {
         //Given
         Path file = Paths.get(Swagger2MarkupTest.class.getResource("/yaml/swagger.yaml").toURI());
-        Path outputDirectory = Paths.get("build/test/markdown/to_folder");
+        Path outputDirectory = Paths.get("build/test/markdown-from-yaml/to_folder");
         FileUtils.deleteQuietly(outputDirectory.toFile());
 
         //When
@@ -106,7 +106,7 @@ public class Swagger2MarkupTest {
     public void testConfluence() throws IOException, URISyntaxException {
         //Given
         Path file = Paths.get(Swagger2MarkupTest.class.getResource("/yaml/swagger.yaml").toURI());
-        Path outputDirectory = Paths.get("build/test/confluence/to_folder");
+        Path outputDirectory = Paths.get("build/test/confluence-from-yaml/to_folder");
         FileUtils.deleteQuietly(outputDirectory.toFile());
 
         //When
@@ -126,7 +126,7 @@ public class Swagger2MarkupTest {
     public void testJsonLocalFile() throws IOException, URISyntaxException {
         //Given
         Path file = Paths.get(Swagger2MarkupTest.class.getResource("/json/swagger.json").toURI());
-        Path outputDirectory = Paths.get("build/test/json/to_folder");
+        Path outputDirectory = Paths.get("build/test/asciidoc-from-json/to_folder");
         FileUtils.deleteQuietly(outputDirectory.toFile());
 
         //When
