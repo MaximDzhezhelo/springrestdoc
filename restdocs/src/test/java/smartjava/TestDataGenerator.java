@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import lombok.SneakyThrows;
 import smartjava.domain.speaker.SpeakerDto;
 import smartjava.domain.speaker.SpeakerRepository;
+import smartjava.domain.topic.TopicRepository;
 
 @Service
 public class TestDataGenerator {
@@ -19,8 +20,15 @@ public class TestDataGenerator {
     @Autowired
     private SpeakerRepository speakerRepository;
 
+    @Autowired
+    private TopicRepository topicRepository;
+
     public SpeakerDataBuilder speaker(String speakerName) {
-        return new SpeakerDataBuilder(speakerRepository).speaker(speakerName);
+        return new SpeakerDataBuilder(speakerRepository, topicRepository).speaker(speakerName);
+    }
+
+    public TopicDataBuilder topic(String topicName) {
+        return new TopicDataBuilder(topicRepository).topic(topicName);
     }
 
     public SpeakerDto.SpeakerDtoBuilder speakerDto(String name) {
