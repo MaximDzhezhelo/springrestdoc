@@ -135,7 +135,7 @@ Adding : we are creating the break-line.
 *----*
 |    |      /--*
 *    *      |
-|    |  -*--+
+|    |  -*--/
 *----*
 ....
 

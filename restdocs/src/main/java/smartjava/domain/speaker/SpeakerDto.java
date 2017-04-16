@@ -4,6 +4,8 @@ package smartjava.domain.speaker;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,9 +20,11 @@ import lombok.Setter;
 public class SpeakerDto {
 
     @NotBlank
+    @NotNull
     private String name;
 
     @NotEmpty
+    @NotNull
     private String company;
 
     public Speaker createSpeaker() {

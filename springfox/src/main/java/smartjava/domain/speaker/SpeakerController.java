@@ -5,11 +5,13 @@ import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.stream.Collectors;
@@ -61,7 +63,8 @@ public class SpeakerController {
     }
 
     @PutMapping(value = "/speakers/{id}")
-    public void updateSpeaker(@PathVariable long id) {
+    public void updateSpeaker(@PathVariable long id, @Validated @RequestBody SpeakerDto speakerDto) {
+        speakerRepository.save(speakerDto.createSpeaker(id));
 
     }
 

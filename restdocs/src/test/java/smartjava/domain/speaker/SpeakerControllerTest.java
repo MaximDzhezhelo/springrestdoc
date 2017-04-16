@@ -9,17 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.restdocs.JUnitRestDocumentation;
-import org.springframework.restdocs.constraints.ConstraintDescriptions;
-import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.stream.Collectors;
-
+import smartjava.ConstrainedFields;
 import smartjava.TestDataGenerator;
 
 import static org.hamcrest.CoreMatchers.endsWith;
@@ -161,9 +156,40 @@ public class SpeakerControllerTest {
 
         action.andDo(document("{class-name}/{method-name}",
                 requestFields(
-                        attributes(key("title").value("SpeakerDTO")),
+                        attributes(key("title").value("SpeakerDTO Constrains")),
                         constrainedFields.name("name").description("The speaker's name."),
                         constrainedFields.name("company").description("The company speaker is working on.")
+                ),
+                responseHeaders(
+                        headerWithName("Location").description("URI path to created resource."))));
+    }
+
+    @Test
+    public void testCreateSpeaker_created2() throws Exception {
+        // Given
+        SpeakerDto requestDto = given.speakerDto("Josh Long").company("Pivotal").build();
+        String requestBody = given.asJsonString(requestDto);
+
+        // When
+        ResultActions action = mockMvc.perform(post("/speakers")
+                .content(requestBody))
+                .andDo(print());
+
+        // Then
+        assertEquals(1, speakerRepository.count());
+        Speaker savedSpeaker = speakerRepository.findByName("Josh Long").get();
+
+        assertEquals(requestDto.getName(), savedSpeaker.getName());
+        assertEquals(requestDto.getCompany(), savedSpeaker.getCompany());
+
+        action.andExpect(status().isCreated())
+                .andExpect(header().string("Location", endsWith("/speakers/" + savedSpeaker.getId())));
+
+        action.andDo(document("{class-name}/{method-name}",
+                requestFields(
+                        attributes(key("title").value("Request"), key("constraints").value("Request")),
+                        fieldWithPath("name").description("DDD"),
+                        fieldWithPath("company").description("COM")
                 ),
                 responseHeaders(
                         headerWithName("Location").description("URI path to created resource."))));
@@ -204,7 +230,7 @@ public class SpeakerControllerTest {
         action.andExpect(status().isUnprocessableEntity())
                 .andExpect(jsonPath("$._embedded.length()", is(1)))
                 .andExpect(jsonPath("$._embedded.validationErrors[0].property", is("company")))
-                .andExpect(jsonPath("$._embedded.validationErrors[0].message", is("may not be empty")))
+                .andExpect(jsonPath("$._embedded.validationErrors[0].message", is("may not be null")))
                 .andExpect(jsonPath("$._embedded.validationErrors[0].invalidValue", is("null")));
 
         action.andDo(document("{class-name}/{method-name}",
@@ -217,22 +243,6 @@ public class SpeakerControllerTest {
                                 "from validation provider exception."),
                         fieldWithPath("_embedded.validationErrors[].invalidValue").description("Invalid value that " +
                                 "had not passed validation"))));
-    }
-
-    private static class ConstrainedFields {
-
-        private final ConstraintDescriptions constraintDescriptions;
-
-        ConstrainedFields(Class<?> input) {
-            this.constraintDescriptions = new ConstraintDescriptions(input);
-        }
-
-        private FieldDescriptor name(String path) {
-            return fieldWithPath(path).attributes(key("constraints").value(
-                    this.constraintDescriptions
-                            .descriptionsForProperty(path).stream()
-                            .collect(Collectors.joining(". "))));
-        }
     }
 
 }
