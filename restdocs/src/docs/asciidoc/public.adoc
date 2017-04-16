@@ -1,12 +1,12 @@
 = Speakers Service Guide
 Roman Tsypuk <tsypuk.conf@gmail.com>
-v1.0, March 31, 2017
+v1.0, April 16, 2017
 
 == Terminology
 * This is demo application of usage Spring RestDocs and asciidoctor.
 
-//== Test Driven Documentation with Spring Rest Docs
-//include::conference.adoc[]
+== Test Driven Documentation with Spring Rest Docs
+include::conference.adoc[]
 
 == Rest conventions
 
@@ -64,45 +64,15 @@ use of HTTP status codes.
 
 === Speaker
 
-==== Get all speakers
-===== Curl example
-include::{snippets}/speaker-controller-test/test-get-all-speakers/curl-request.adoc[]
-===== Httpie example
-include::{snippets}/speaker-controller-test/test-get-all-speakers/httpie-request.adoc[]
-===== HTTP Request
-include::{snippets}/speaker-controller-test/test-get-all-speakers/http-request.adoc[]
-===== HTTP Response
-====== Success HTTP responses
-include::{snippets}/speaker-controller-test/test-get-all-speakers/http-response.adoc[]
-====== Success response fields
-include::{snippets}/speaker-controller-test/test-get-all-speakers/response-fields.adoc[]
+include::domain/speaker.adoc[]
 
-==== Get speaker
-===== Curl example
-include::{snippets}/speaker-controller-test/test-get-speaker/curl-request.adoc[]
-===== Httpie example
-include::{snippets}/speaker-controller-test/test-get-speaker/httpie-request.adoc[]
-===== HTTP Request
-include::{snippets}/speaker-controller-test/test-get-speaker/http-request.adoc[]
-===== HTTP Response
-====== Success HTTP responses
-include::{snippets}/speaker-controller-test/test-get-speaker/http-response.adoc[]
-====== Success response fields
-include::{snippets}/speaker-controller-test/test-get-speaker/response-fields.adoc[]
-====== HATEOAS links
-include::{snippets}/speaker-controller-test/test-get-speaker/links.adoc[]
+=== Topic
 
-==== Create speaker
-===== Curl example
-include::{snippets}/speaker-controller-test/test-create-speaker_created/curl-request.adoc[]
-===== Httpie example
-include::{snippets}/speaker-controller-test/test-create-speaker_created/httpie-request.adoc[]
-===== HTTP Request
-include::{snippets}/speaker-controller-test/test-create-speaker_created/http-request.adoc[]
-===== HTTP Response
-====== Success HTTP responses
-include::{snippets}/speaker-controller-test/test-create-speaker_created/http-response.adoc[]
-====== Success response headers
-include::{snippets}/speaker-controller-test/test-create-speaker_created/response-headers.adoc[]
-====== Constrains
-include::{snippets}/speaker-controller-test/test-create-speaker_created/request-fields.adoc[]
+include::domain/topic.adoc[]
+
+== TODO items
+- [*] Create controller tests.
+- [x] Implement swagger migration.
+- [ ] Add tests for Speaker controller.
+- [ ] Add tests for Topic controller.
+- [ ] Add DB migration.

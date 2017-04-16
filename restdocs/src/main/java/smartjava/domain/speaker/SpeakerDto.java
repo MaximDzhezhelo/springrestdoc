@@ -20,11 +20,9 @@ import lombok.Setter;
 public class SpeakerDto {
 
     @NotBlank
-    @NotNull
     private String name;
 
     @NotEmpty
-    @NotNull
     private String company;
 
     public Speaker createSpeaker() {

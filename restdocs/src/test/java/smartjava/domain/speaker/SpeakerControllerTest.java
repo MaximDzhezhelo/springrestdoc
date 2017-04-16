@@ -16,10 +16,14 @@ import org.springframework.web.context.WebApplicationContext;
 
 import smartjava.ConstrainedFields;
 import smartjava.TestDataGenerator;
+import smartjava.domain.topic.Topic;
+import smartjava.domain.topic.TopicRepository;
 
 import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.halLinks;
@@ -34,6 +38,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.snippet.Attributes.attributes;
 import static org.springframework.restdocs.snippet.Attributes.key;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -53,6 +58,9 @@ public class SpeakerControllerTest {
 
     @Autowired
     private SpeakerRepository speakerRepository;
+
+    @Autowired
+    private TopicRepository topicRepository;
 
     private MockMvc mockMvc;
 
@@ -86,7 +94,8 @@ public class SpeakerControllerTest {
 
         //When
         ResultActions action = mockMvc.perform(
-                get("/speakers/{id}", josh.getId()).accept(MediaTypes.HAL_JSON));
+                get("/speakers/{id}", josh.getId())
+                        .accept(MediaTypes.HAL_JSON));
 
         //Then
         action.andDo(print()).andExpect(status().isOk());
@@ -98,10 +107,10 @@ public class SpeakerControllerTest {
                         responseFields(
                                 fieldWithPath("name").description("Speakers name."),
                                 fieldWithPath("company").description("The company where speaker is working on."),
-                                fieldWithPath("_links").description("Link section."),
-                                fieldWithPath("_links.self.href").description("Link to self section.")
-                        ),
-                        links(halLinks(), linkWithRel("self").description("Link to self section."))));
+                                fieldWithPath("_links").description("Link section.")),
+                        links(halLinks(),
+                                linkWithRel("self").description("Link to self section."),
+                                linkWithRel("topics").description("Link to speaker's topics"))));
     }
 
     @Test
@@ -122,13 +131,22 @@ public class SpeakerControllerTest {
                         fieldWithPath("_embedded.speakers").description("Array with returned Speaker resources."),
                         fieldWithPath("_embedded.speakers[].name").description("Speaker's name."),
                         fieldWithPath("_embedded.speakers[]._links").description("Link section."),
-                        fieldWithPath("_embedded.speakers[]._links.self.href").description("Link to self section.")
-                )));
+                        fieldWithPath("_embedded.speakers[]._links.self.href").description("Link to self section."))));
     }
 
     @Test
     public void testDeleteSpeaker() throws Exception {
+        //Given
+        Speaker speakerToDelete = given.speaker("TO_DELETE").company("COMPANY").save();
 
+        //When
+        ResultActions actions = mockMvc.perform(delete("/speakers/{id}", speakerToDelete.getId()))
+                .andDo(print());
+
+        //Then
+        actions.andExpect(status().isNoContent());
+        actions.andDo(document("{class-name}/{method-name}"));
+        assertEquals(0, speakerRepository.count());
     }
 
     @Test
@@ -165,37 +183,6 @@ public class SpeakerControllerTest {
     }
 
     @Test
-    public void testCreateSpeaker_created2() throws Exception {
-        // Given
-        SpeakerDto requestDto = given.speakerDto("Josh Long").company("Pivotal").build();
-        String requestBody = given.asJsonString(requestDto);
-
-        // When
-        ResultActions action = mockMvc.perform(post("/speakers")
-                .content(requestBody))
-                .andDo(print());
-
-        // Then
-        assertEquals(1, speakerRepository.count());
-        Speaker savedSpeaker = speakerRepository.findByName("Josh Long").get();
-
-        assertEquals(requestDto.getName(), savedSpeaker.getName());
-        assertEquals(requestDto.getCompany(), savedSpeaker.getCompany());
-
-        action.andExpect(status().isCreated())
-                .andExpect(header().string("Location", endsWith("/speakers/" + savedSpeaker.getId())));
-
-        action.andDo(document("{class-name}/{method-name}",
-                requestFields(
-                        attributes(key("title").value("Request"), key("constraints").value("Request")),
-                        fieldWithPath("name").description("DDD"),
-                        fieldWithPath("company").description("COM")
-                ),
-                responseHeaders(
-                        headerWithName("Location").description("URI path to created resource."))));
-    }
-
-    @Test
     public void testCreateSpeaker_conflict() throws Exception {
         //Given
         Speaker josh = given.speaker("Josh Long").company("Pivotal").save();
@@ -211,8 +198,7 @@ public class SpeakerControllerTest {
         action.andExpect(jsonPath("content", is("Entity  Speaker with name 'Josh Long' already present in DB.")));
         action.andDo(document("{class-name}/{method-name}",
                 responseFields(
-                        fieldWithPath("content").description("Errors that was found during validation.")
-                )));
+                        fieldWithPath("content").description("Errors that was found during validation."))));
     }
 
     @Test
@@ -230,7 +216,7 @@ public class SpeakerControllerTest {
         action.andExpect(status().isUnprocessableEntity())
                 .andExpect(jsonPath("$._embedded.length()", is(1)))
                 .andExpect(jsonPath("$._embedded.validationErrors[0].property", is("company")))
-                .andExpect(jsonPath("$._embedded.validationErrors[0].message", is("may not be null")))
+                .andExpect(jsonPath("$._embedded.validationErrors[0].message", is("may not be empty")))
                 .andExpect(jsonPath("$._embedded.validationErrors[0].invalidValue", is("null")));
 
         action.andDo(document("{class-name}/{method-name}",
@@ -243,6 +229,39 @@ public class SpeakerControllerTest {
                                 "from validation provider exception."),
                         fieldWithPath("_embedded.validationErrors[].invalidValue").description("Invalid value that " +
                                 "had not passed validation"))));
+    }
+
+    @Test
+    public void testGetSpeakerTopics() throws Exception {
+        // Given
+        Topic[] topics = {given.topic("Java9").description("Comming soon.").build(),
+                given.topic("Spring").description("Pivotal").build()};
+
+        Speaker savedSpeaker = given.speaker("SpeakerName").company("Company")
+                .topics(topics).save();
+
+        // When
+        ResultActions actions = mockMvc.perform(get("/speakers/{id}/topics", savedSpeaker.getId()))
+                .andDo(print());
+
+        // Then
+        assertEquals(1, speakerRepository.count());
+        assertEquals(2, topicRepository.count());
+        actions.andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.topics.length()", is(topics.length)))
+                .andExpect(jsonPath("$._embedded.topics[1].name").value(is("Spring")))
+                .andExpect(jsonPath("$._embedded.topics[*].name",
+                        containsInAnyOrder("Spring", "Java9")))
+                .andExpect(jsonPath("$._embedded.topics[*].description",
+                        containsInAnyOrder("Comming soon.", "Pivotal"))
+                );
+        actions.andDo(document("{class-name}/{method-name}",
+                responseFields(
+                        fieldWithPath("_embedded").description("'topics' array with Topic resources."),
+                        fieldWithPath("_embedded.topics").description("Array of topics that are associated with speaker."),
+                        fieldWithPath("_embedded.topics[].name").description("Topic name."),
+                        fieldWithPath("_embedded.topics[].description").description("Topic description."),
+                        fieldWithPath("_embedded.topics[]._links").description("Link section."))));
     }
 
 }

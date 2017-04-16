@@ -26,7 +26,6 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Topic {
 
     @Id
@@ -39,7 +38,6 @@ public class Topic {
     @NotBlank
     private String description;
 
-    @NotNull
     private Duration duration;
 
 }
