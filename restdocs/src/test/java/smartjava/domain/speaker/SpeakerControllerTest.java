@@ -23,7 +23,6 @@ import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.halLinks;
@@ -70,11 +69,13 @@ public class SpeakerControllerTest {
     public final JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation("build/generated-snippets");
 
     @Before
-    public void setUp() {
-        this.mockMvc = webAppContextSetup(this.context)
-                .apply(documentationConfiguration(this.restDocumentation).uris()
+    public void init() {
+        mockMvc = webAppContextSetup(context)
+                .apply(documentationConfiguration(this.restDocumentation)
+                        .uris()
                         .withScheme("https")
-                        .withHost("mydomain.com"))
+                        .withHost("mydomain.com")
+                )
                 .defaultRequest(options("/")
                         .accept(HAL_JSON_CHARSET_UTF_8)
                         .contentType(HAL_JSON_CHARSET_UTF_8))
@@ -130,8 +131,8 @@ public class SpeakerControllerTest {
                         fieldWithPath("_embedded").description("'speakers' array with Speakers resources."),
                         fieldWithPath("_embedded.speakers").description("Array with returned Speaker resources."),
                         fieldWithPath("_embedded.speakers[].name").description("Speaker's name."),
-                        fieldWithPath("_embedded.speakers[]._links").description("Link section."),
-                        fieldWithPath("_embedded.speakers[]._links.self.href").description("Link to self section."))));
+                        fieldWithPath("_embedded.speakers[]._links").description("Link section.")
+                        )));
     }
 
     @Test

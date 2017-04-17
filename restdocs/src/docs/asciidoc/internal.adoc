@@ -1,4 +1,4 @@
-include::header_internal.adoc[]
+include::header.adoc[]
 include::public.adoc[]
 == Application settings
 
@@ -112,6 +112,13 @@ UNIQUE KEY `UK_table_name`
 
 IMPORTANT: Do not edit/delete files in db.migration folder. In this case the checksum is changed.
 Updates to DB schema are applied only by adding new patch.
+
+== TODO items
+- [*] Create controller tests.
+- [x] Implement swagger migration.
+- [ ] Add tests for Speaker controller.
+- [ ] Add tests for Topic controller.
+- [ ] Add DB migration.
 
 == Links
 

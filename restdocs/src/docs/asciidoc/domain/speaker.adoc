@@ -34,6 +34,15 @@ include::{snippets}/speaker-controller-test/test-create-speaker_created/http-res
 include::{snippets}/speaker-controller-test/test-create-speaker_created/response-headers.adoc[]
 ====== Constrains
 include::{snippets}/speaker-controller-test/test-create-speaker_created/request-fields.adoc[]
+====== Error HTTP responses
+====== On Conflict
+include::{snippets}/speaker-controller-test/test-create-speaker_conflict/http-response.adoc[]
+====== Error responses fields
+include::{snippets}/speaker-controller-test/test-create-speaker_conflict/response-fields.adoc[]
+====== On validation failed
+include::{snippets}/speaker-controller-test/test-create-speaker_validation-fails/http-response.adoc[]
+====== Error responses fields
+include::{snippets}/speaker-controller-test/test-create-speaker_validation-fails/response-fields.adoc[]
 
 ==== Delete speaker
 ===== Curl example
