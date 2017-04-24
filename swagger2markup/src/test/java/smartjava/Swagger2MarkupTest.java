@@ -35,7 +35,7 @@ public class Swagger2MarkupTest {
     @Test
     public void createJsonFileFromSwaggerEndpoint() throws Exception {
         String outputDir = Optional.ofNullable(System.getProperty("io.springfox.staticdocs.outputDir"))
-                .orElse("");
+                .orElse("build/swagger");
         System.err.println(outputDir);
         MvcResult mvcResult = this.mockMvc.perform(get("/v2/api-docs")
                 .accept(MediaType.APPLICATION_JSON))
