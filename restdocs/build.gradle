@@ -48,6 +48,8 @@ asciidoctor {
             'idprefix'          : '',
             'idseparator'       : '-',
             'docinfo1'          : '',
+            'safe-mode-unsafe'  : '',
+            'allow-uri-read'    : '',
             'snippets'          : snippetsDir,
             linkattrs           : true,
             encoding            : 'utf-8'

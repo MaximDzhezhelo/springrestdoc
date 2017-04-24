@@ -1,4 +1,6 @@
-JeeConf 2017.
+image::http://jeeconf.com/wp-content/themes/jeeconf/images/jee-logo.png[JEE Conf]
+
+http://asciidoctor.org[Test Driven Documentation with Spring Rest Docs. JEEConf 2017.]
 
 Documenting RESTful services is important step in development, especially if you are working with microservices architecture or your RESTful APIs are shared and public available. The most widely used tool for this task is Swagger, but it has known limitations and tradeoffs.
 

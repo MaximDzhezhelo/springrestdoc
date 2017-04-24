@@ -3,20 +3,16 @@ Roman Tsypuk <tsypuk.conf@gmail.com>
 v1.0, April 16, 2017
 
 == Terminology
-* This is demo application of usage Spring RestDocs and asciidoctor.
+* This is demo generated documentation based on Spring RestDocs.
 
-//== Test Driven Documentation with Spring Rest Docs
-//include::conference.adoc[]
+== My JEE Conf 2017 topic
+include::conference.adoc[]
 
 == Rest conventions
 include::rest_conv.adoc[]
 
 == Endpoints
-
 === Speaker
-
 include::domain/speaker.adoc[]
-
 === Topic
-
 include::domain/topic.adoc[]

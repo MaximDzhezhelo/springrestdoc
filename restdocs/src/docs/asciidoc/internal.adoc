@@ -1,5 +1,12 @@
 include::header.adoc[]
 include::public.adoc[]
+
+== AsciiDoc is awesome
+I'm adding here the general example of asciidoc format. To see all of them please follow
+http://asciidoctor.org[Asciidoctor]
+
+include::adoc_awesome.adoc[]
+
 == Application settings
 
 === Profiles setting

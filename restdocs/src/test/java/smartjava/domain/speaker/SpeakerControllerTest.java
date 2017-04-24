@@ -199,7 +199,7 @@ public class SpeakerControllerTest {
         action.andExpect(jsonPath("content", is("Entity  Speaker with name 'Josh Long' already present in DB.")));
         action.andDo(document("{class-name}/{method-name}",
                 responseFields(
-                        fieldWithPath("content").description("Errors that was found during validation."))));
+                        fieldWithPath("content").description("Errors that were found during validation."))));
     }
 
     @Test

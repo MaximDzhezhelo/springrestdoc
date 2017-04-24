@@ -1,4 +1,3 @@
-
 === HTTP verbs
 Speakers Service tries to adhere as closely as possible to standard HTTP and REST conventions in its
 use of HTTP verbs.
