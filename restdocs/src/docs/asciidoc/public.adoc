@@ -4,9 +4,15 @@ v1.0, April 16, 2017
 
 == Terminology
 * This is demo generated documentation based on Spring RestDocs.
+* All sources are available at github https://github.com/tsypuk/springrestdoc
 
-== My JEE Conf 2017 topic
-include::conference.adoc[]
+== My presentation for Java communities about Spring Rest Docs
+
+=== Morning@Lohika
+include::lohika_morning.adoc[]
+
+//=== JEEconf 2017
+//include::jeeconf.adoc[]
 
 == Rest conventions
 include::rest_conv.adoc[]

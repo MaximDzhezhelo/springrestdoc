@@ -1,0 +1,4 @@
+image::http://jeeconf.com/wp-content/themes/jeeconf/images/jee-logo.png[JEE Conf]
+May 26-27, 2017
+
+http://jeeconf.com/program/test-driven-documentation-with-spring-rest-docs/[Test Driven Documentation with Spring Rest Docs. JEEConf 2017.]
