@@ -14,12 +14,15 @@ include::{snippets}/speaker-controller-test/test-get-all-speakers/response-field
 include::{snippets}/speaker-controller-test/test-get-speaker/curl-request.adoc[]
 ===== HTTP Request
 include::{snippets}/speaker-controller-test/test-get-speaker/http-request.adoc[]
+===== Path variables
+include::{snippets}/speaker-controller-test/test-get-speaker/path-parameters.adoc[]
 ===== HTTP Response
 ====== Success HTTP responses
 include::{snippets}/speaker-controller-test/test-get-speaker/http-response.adoc[]
 ====== Success response fields
 include::{snippets}/speaker-controller-test/test-get-speaker/response-fields.adoc[]
 ====== HATEOAS links
+[[resources-tags-links]]
 include::{snippets}/speaker-controller-test/test-get-speaker/links.adoc[]
 
 ==== Create speaker
@@ -27,6 +30,8 @@ include::{snippets}/speaker-controller-test/test-get-speaker/links.adoc[]
 include::{snippets}/speaker-controller-test/test-create-speaker_created/curl-request.adoc[]
 ===== HTTP Request
 include::{snippets}/speaker-controller-test/test-create-speaker_created/http-request.adoc[]
+===== Request Body
+include::{snippets}/speaker-controller-test/test-create-speaker_created/request-body.adoc[]
 ===== HTTP Response
 ====== Success HTTP responses
 include::{snippets}/speaker-controller-test/test-create-speaker_created/http-response.adoc[]
@@ -63,3 +68,5 @@ include::{snippets}/speaker-controller-test/test-get-speaker-topics/http-request
 include::{snippets}/speaker-controller-test/test-get-speaker-topics/http-response.adoc[]
 ====== Success response fields
 include::{snippets}/speaker-controller-test/test-get-speaker-topics/response-fields.adoc[]
+====== HATEOAS links
+include::{snippets}/speaker-controller-test/test-get-speaker/links.adoc[]

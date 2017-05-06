@@ -21,11 +21,10 @@ public class SpeakerDto {
     @NotEmpty
     private String company;
 
-    public Speaker createSpeaker(long speakerId) {
+    public Speaker createSpeaker() {
         return Speaker.builder()
                 .company(this.company)
                 .name(this.name)
-                .id(speakerId)
                 .build();
     }
 

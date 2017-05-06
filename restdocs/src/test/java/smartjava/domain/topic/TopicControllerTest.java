@@ -19,6 +19,7 @@ import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.li
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -53,7 +54,7 @@ public class TopicControllerTest {
                         responseFields(
                                 fieldWithPath("name").description("The name of the Topic."),
                                 fieldWithPath("description").description("Desc."),
-                                fieldWithPath("_links").description("HATEOAS links")),
+                        subsectionWithPath("_links").description("HATEOAS links")),
                         links(halLinks(),
                                 linkWithRel("self").description("The link to self resource"))));
     }

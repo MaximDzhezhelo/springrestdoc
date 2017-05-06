@@ -25,7 +25,7 @@ githubPages {
 //    }
     targetBranch = 'gh-pages'
     pages {
-        from(file('build/asciidoc/html5'))
+        from(file('build/asciidoc/html5/etc'))
         include('internal.html')
         rename ('internal.html', 'index.html')
     }

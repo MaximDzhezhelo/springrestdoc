@@ -8,7 +8,7 @@ v1.0, April 16, 2017
 
 == My presentation for Java communities about Spring Rest Docs
 
-=== Morning@Lohika
+=== Morning@Lohika 2017
 include::lohika_morning.adoc[]
 
 //=== JEEconf 2017
@@ -19,6 +19,6 @@ include::rest_conv.adoc[]
 
 == Endpoints
 === Speaker
-include::domain/speaker.adoc[]
+include::../domain/speaker.adoc[]
 === Topic
-include::domain/topic.adoc[]
+include::../domain/topic.adoc[]

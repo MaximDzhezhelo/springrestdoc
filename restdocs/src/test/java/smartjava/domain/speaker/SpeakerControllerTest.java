@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.restdocs.JUnitRestDocumentation;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -35,6 +36,9 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.snippet.Attributes.attributes;
 import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -47,6 +51,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+//@Ignore
 public class SpeakerControllerTest {
 
     @Autowired
@@ -94,24 +99,27 @@ public class SpeakerControllerTest {
         Speaker noiseData = given.speaker("Noise").company("Noise").save();
 
         //When
-        ResultActions action = mockMvc.perform(
-                get("/speakers/{id}", josh.getId())
-                        .accept(MediaTypes.HAL_JSON));
+        ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders.get("/speakers/{id}", josh.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is("Josh Long")))
+                .andExpect(jsonPath("$.company", is("Pivotal")))
+                .andDo(print());
 
-        //Then
-        action.andDo(print()).andExpect(status().isOk());
-        action.andExpect(jsonPath("$.name", is(josh.getName())))
-                .andExpect(jsonPath("$.company", is(josh.getCompany())));
-
-        action.andDo(
-                document("{class-name}/{method-name}",
-                        responseFields(
-                                fieldWithPath("name").description("Speakers name."),
-                                fieldWithPath("company").description("The company where speaker is working on."),
-                                fieldWithPath("_links").description("Link section.")),
-                        links(halLinks(),
-                                linkWithRel("self").description("Link to self section."),
-                                linkWithRel("topics").description("Link to speaker's topics"))));
+//        actions.andDo(document("{class-name}/{method-name}"));
+        actions.andDo(document("{class-name}/{method-name}",
+                responseFields(
+                        fieldWithPath("name").description("Speaker's name"),
+                        fieldWithPath("status").description("Speaker's name"),
+                        fieldWithPath("company").description("Speaker's name"),
+                        subsectionWithPath("_links").description("<<resources-tags-links, Links>> to Speakers HATEOAS")
+                ),
+                links(halLinks(),
+                        linkWithRel("self").description("Link to self"),
+                        linkWithRel("topics").description("Link to speaker's topics.")),
+                pathParameters(
+                        parameterWithName("id").description("Required identifier of Speaker")
+                )
+        ));
     }
 
     @Test
@@ -131,8 +139,14 @@ public class SpeakerControllerTest {
                         fieldWithPath("_embedded").description("'speakers' array with Speakers resources."),
                         fieldWithPath("_embedded.speakers").description("Array with returned Speaker resources."),
                         fieldWithPath("_embedded.speakers[].name").description("Speaker's name."),
-                        fieldWithPath("_embedded.speakers[]._links").description("Link section.")
-                        )));
+                        fieldWithPath("_embedded.speakers[].company").description("Speaker's company."),
+                        fieldWithPath("_embedded.speakers[].status").description("Speaker's status name."),
+                        fieldWithPath("_embedded.speakers[]._links").description("Link section."),
+                        subsectionWithPath("_embedded.speakers[]._links").description("<<resources-tags-links, " +
+                                "HATEOAS Links>> to Speaker actions")
+                )
+
+        ));
     }
 
     @Test
@@ -141,7 +155,7 @@ public class SpeakerControllerTest {
         Speaker speakerToDelete = given.speaker("TO_DELETE").company("COMPANY").save();
 
         //When
-        ResultActions actions = mockMvc.perform(delete("/speakers/{id}", speakerToDelete.getId()))
+        ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders.delete("/speakers/{id}", speakerToDelete.getId()))
                 .andDo(print());
 
         //Then
@@ -157,7 +171,7 @@ public class SpeakerControllerTest {
         String requestBody = given.asJsonString(requestDto);
 
         // When
-        ResultActions action = mockMvc.perform(post("/speakers")
+        ResultActions action = mockMvc.perform(RestDocumentationRequestBuilders.post("/speakers")
                 .content(requestBody))
                 .andDo(print());
 
@@ -258,11 +272,15 @@ public class SpeakerControllerTest {
                 );
         actions.andDo(document("{class-name}/{method-name}",
                 responseFields(
-                        fieldWithPath("_embedded").description("'topics' array with Topic resources."),
-                        fieldWithPath("_embedded.topics").description("Array of topics that are associated with speaker."),
-                        fieldWithPath("_embedded.topics[].name").description("Topic name."),
-                        fieldWithPath("_embedded.topics[].description").description("Topic description."),
-                        fieldWithPath("_embedded.topics[]._links").description("Link section."))));
+                        fieldWithPath("_embedded").description("'topics' array with Topic resources"),
+                        fieldWithPath("_embedded.topics").description("Array of topics that are associated with " +
+                                "speaker"),
+                        fieldWithPath("_embedded.topics[].name").description("Topic name"),
+                        fieldWithPath("_embedded.topics[].description").description("Topic description"),
+                        fieldWithPath("_embedded.topics[]._links").description("Link section"),
+                        subsectionWithPath("_embedded.topics[]._links").description("HATEOAS links")
+
+                )));
     }
 
 }
