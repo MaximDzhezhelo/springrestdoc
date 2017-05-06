@@ -66,8 +66,8 @@ public class SpeakerController {
     public ResponseEntity<SpeakerResource> createSpeaker(@Validated @RequestBody SpeakerDto speakerDto) {
         if (!speakerRepository.findByName(speakerDto.getName()).isPresent()) {
             Speaker savedSpeaker = speakerRepository.save(speakerDto.createSpeaker());
-            Link linkToTestStep = new SpeakerResource(savedSpeaker).getLink(Link.REL_SELF);
-            return ResponseEntity.created(URI.create(linkToTestStep.getHref())).build();
+            Link linkToSpeaker = new SpeakerResource(savedSpeaker).getLink(Link.REL_SELF);
+            return ResponseEntity.created(URI.create(linkToSpeaker.getHref())).build();
         } else {
             throw new DuplicateEntityException(Speaker.class, speakerDto.getName());
         }

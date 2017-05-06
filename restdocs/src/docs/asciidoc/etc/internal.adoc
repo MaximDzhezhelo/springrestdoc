@@ -2,6 +2,7 @@ include::header.adoc[]
 include::public.adoc[]
 
 == AsciiDoc is awesome
+Asciidoc is powerful tool to process text and images.
 I'm adding here the general example of asciidoc format. To see all of them please follow
 http://asciidoctor.org[Asciidoctor]
 
@@ -14,7 +15,7 @@ Production profile:
 
 [source,java,linenums,options="nowrap"]
 ----
-include::../../main/resources/application.properties[]
+include::../../../main/resources/application.properties[]
 ----
 
 == Code conventions and best practices

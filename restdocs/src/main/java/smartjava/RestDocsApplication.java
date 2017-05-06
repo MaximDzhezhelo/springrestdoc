@@ -6,23 +6,28 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
+import smartjava.domain.speaker.SpeakerRepository;
 
 import static org.springframework.hateoas.config.EnableHypermediaSupport.HypermediaType.HAL;
 
 @SpringBootApplication
 @EnableHypermediaSupport(type = HAL)
-public class RestDocsApplication {
+public class RestDocsApplication implements CommandLineRunner{
 
     private static final String SPRING_HATEOAS_OBJECT_MAPPER = "_halObjectMapper";
 
     public static void main(String[] args) {
         SpringApplication.run(RestDocsApplication.class, args);
     }
+
+    @Autowired
+    private SpeakerRepository speakerRepository;
 
     @Autowired
     @Qualifier(SPRING_HATEOAS_OBJECT_MAPPER)
@@ -37,4 +42,8 @@ public class RestDocsApplication {
         return springHateoasObjectMapper;
     }
 
+    @Override
+    public void run(String... args) throws Exception {
+//        speakerRepository.save(Speaker.builder().name("Josj Long").company("Pivotal").build());
+    }
 }

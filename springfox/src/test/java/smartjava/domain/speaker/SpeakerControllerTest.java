@@ -11,9 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.springframework.web.context.WebApplicationContext;
 
 import smartjava.TestDataGenerator;
@@ -23,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.springframework.hateoas.MediaTypes.HAL_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.options;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -44,7 +43,11 @@ public class SpeakerControllerTest {
 
     @Before
     public void setUp() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx).build();
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx)
+                .defaultRequest(options("/")
+                        .accept(MediaTypes.HAL_JSON)
+                        .contentType("application/hal+json;charset=UTF-8"))
+                .build();
     }
 
     @After
@@ -59,8 +62,7 @@ public class SpeakerControllerTest {
         Speaker dummyRecord = given.speaker("NONE").company("NONE").save();
 
         //When
-        ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.get("/speakers/{id}", josh.getId())
-                .accept(MediaTypes.HAL_JSON))
+        ResultActions actions = mockMvc.perform(get("/speakers/{id}", josh.getId()))
                 .andDo(print());
 
         //Then
@@ -70,7 +72,7 @@ public class SpeakerControllerTest {
     }
 
     @Test
-    public void testAllSpeakers() throws Exception {
+    public void testGetSpeakers() throws Exception {
         //Given
         Speaker josh = given.speaker("Josh Long").company("Pivotal").save();
         Speaker venkat = given.speaker("Venkat Subramaniam").company("Agile").save();
@@ -89,10 +91,11 @@ public class SpeakerControllerTest {
         Speaker noiseRecord = given.speaker("SP").company("SP").save();
 
         //When
-        ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.delete("/speakers/{id}", speakerToDelete.getId()));
+        ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.delete("/speakers/{id}",
+                speakerToDelete.getId()));
 
         //Then
-        actions.andDo(print()).andExpect(status().isOk());
+        actions.andDo(print()).andExpect(status().isNoContent());
         assertEquals(1, speakerRepository.count());
         assertEquals(noiseRecord.getId(), speakerRepository.findByName("SP").get().getId());
     }
@@ -109,10 +112,10 @@ public class SpeakerControllerTest {
                 .contentType(MediaTypes.HAL_JSON));
 
         // Then
-        actions.andDo(MockMvcResultHandlers.print())
+        actions.andDo(print())
                 .andExpect(status().isOk());
 
-        assertThat(1L).isEqualTo(speakerRepository.count());
+        assertEquals(1, speakerRepository.count());
         Speaker speaker = speakerRepository.findOne(speakerToUpdate.getId()).get();
         assertThat("Updated Company", is(speaker.getCompany()));
         assertThat("Updated Name", is(speaker.getName()));

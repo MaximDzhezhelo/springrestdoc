@@ -1,9 +1,6 @@
-version = '0.0.1'
-group = 'ua.in.smartjava.spring-rest-docs'
-
 buildscript {
     ext {
-        springBootVersion = '1.5.1.RELEASE'
+        springBootVersion = '1.5.3.RELEASE'
         asciiDoctorPluginVersion = '1.5.3'
         asciiDoctorPdf = '1.5.0-alpha.11'
         epubVersion = '1.5.0-alpha.6'
@@ -12,9 +9,7 @@ buildscript {
         jcenter()
         mavenCentral()
         mavenLocal()
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
+        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -29,19 +24,26 @@ apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'org.asciidoctor.convert'
 
+version = '0.0.1'
+group = 'ua.in.smartjava.spring-rest-docs'
+
 ext {
     snippetsDir = file('build/generated-snippets')
 }
 
 asciidoctor {
     dependsOn test
-    backends = ['html5', 'pdf', 'epub3', 'docbook']
+//    backends = ['html5', 'pdf', 'epub3', 'docbook']
+// There is issue with epub3 in org.asciidoctor:asciidoctorj-epub3-1.5.0-alpha.6
+// It worked correctly with ascidoc 1.1
+    backends = ['html5', 'pdf', 'docbook']
     options doctype: 'book'
 
     attributes = [
             'source-highlighter': 'highlightjs',
             'imagesdir'         : './images',
             'toc'               : 'left',
+            'toclevels'         : 3,
             'numbered'          : '',
             'icons'             : 'font',
             'setanchors'        : '',
@@ -59,15 +61,16 @@ asciidoctor {
     outputDir "build/asciidoc"
     sourceDir 'src/docs/asciidoc'
     sources {
-        include 'index.adoc', 'internal.adoc'
+//        include 'index.adoc'
+        include 'index.adoc', 'etc/internal.adoc'
     }
 }
 
 jar {
     dependsOn asciidoctor
-    from("${asciidoctor.outputDir}/html5") {
+    from ("${asciidoctor.outputDir}/html5") {
         include '**/index.html'
-        include '**/images/image.png'
+        include '**/images/*'
         into 'static/docs'
     }
 }
@@ -77,17 +80,20 @@ targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile('org.springframework.boot:spring-boot-starter-hateoas')
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-hateoas')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile 'org.springframework.restdocs:spring-restdocs-core:1.2.0.RELEASE'
     compile 'com.h2database:h2:1.4.194'
     compile('org.projectlombok:lombok')
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
-    testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
+    asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor:1.2.0.RELEASE'
+    testCompile ('org.springframework.restdocs:spring-restdocs-mockmvc:1.2.0.RELEASE')
     testCompile('com.jayway.jsonpath:json-path')
 }
 

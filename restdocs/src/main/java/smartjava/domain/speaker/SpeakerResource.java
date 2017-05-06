@@ -19,10 +19,12 @@ public class SpeakerResource extends ResourceSupport {
 
     private String name;
     private String company;
+    private String status;
 
     public SpeakerResource(Speaker speaker) {
         this.name = speaker.getName();
         this.company = speaker.getCompany();
+        this.status = "I like morning@lohika \\0//";
         add(linkTo(methodOn(SpeakerController.class).getSpeaker(speaker.getId())).withSelfRel());
         add(linkTo(methodOn(SpeakerController.class).getSpeakerTopics(speaker.getId())).withRel("topics"));
     }

@@ -116,13 +116,13 @@ end
 
 [source,java]
 ----
-include::../../main/java/smartjava/domain/speaker/Speaker.java[]
+include::../../../main/java/smartjava/domain/speaker/Speaker.java[]
 ----
 
 === Code from source only lines 26-49 included
 [source,ruby,indent=0]
 ----
-include::../../main/java/smartjava/domain/speaker/Speaker.java[lines=26..49]
+include::../../../main/java/smartjava/domain/speaker/Speaker.java[lines=26..49]
 ----
 
 === Block quote
