@@ -36,7 +36,8 @@ asciidoctor {
 //    backends = ['html5', 'pdf', 'epub3', 'docbook']
 // There is issue with epub3 in org.asciidoctor:asciidoctorj-epub3-1.5.0-alpha.6
 // It worked correctly with ascidoc 1.1
-    backends = ['html5', 'pdf', 'docbook']
+//    backends = ['html5', 'pdf', 'docbook']
+    backends = ['html5']
     options doctype: 'book'
 
     attributes = [

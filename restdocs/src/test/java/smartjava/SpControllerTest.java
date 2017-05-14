@@ -22,16 +22,17 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import smartjava.domain.speaker.Speaker;
 import smartjava.domain.speaker.SpeakerRepository;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.halLinks;
+import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @Ignore
 @RunWith(SpringRunner.class)
@@ -41,10 +42,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SpControllerTest {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
-    SpeakerRepository speakerRepository;
+    private SpeakerRepository speakerRepository;
 
     @After
     public void tearDown() {
@@ -54,32 +55,31 @@ public class SpControllerTest {
     @Test
     public void testGetSpeaker() throws Exception {
         // Given
-        Speaker josh = Speaker.builder().name("Josh").company("pivotal").build();
-        Speaker noise = Speaker.builder().name("Noise").company("Noise").build();
+        Speaker josh = Speaker.builder().name("Josh Long").company("Pivotal").build();
         speakerRepository.save(josh);
-        speakerRepository.save(noise);
-
 
         // When
         ResultActions actions = mockMvc.perform(get("/speakers/{id}", josh.getId()))
                 .andDo(print());
 
         // Then
-        actions.andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is("Josh")))
-                .andExpect(jsonPath("$.company", is("pivotal")));
+        actions.andExpect(jsonPath("$.name", is("Josh Long")))
+                .andExpect(jsonPath("$.company", is("Pivotal")));
 
+        // Document
         actions.andDo(document("{class-name}/{method-name}",
                 responseFields(
-                        fieldWithPath("name").description("The speakers name"),
-                        fieldWithPath("company").description("The speaker's company"),
-                        fieldWithPath("status").description("Only good statuses :)"),
-                        fieldWithPath("_links").description("HATEOAS links")
+                        fieldWithPath("name").description("The name of the speaker"),
+                        fieldWithPath("company").description("The company speaker is working on"),
+                        fieldWithPath("status").description("Hope only good one"),
+                        subsectionWithPath("_links").description("HATEOAS links")
                 ),
-                links(halLinks(),
-                        linkWithRel("self").description("The link to Speaker resource"),
-                        linkWithRel("topics").description("The link to Speaker's topics")
-                        )
+                links(
+                        linkWithRel("self").description("Link to Speaker"),
+                        linkWithRel("topics").description("The topics speaker is working with")
+                )
                 ));
+
     }
+
 }

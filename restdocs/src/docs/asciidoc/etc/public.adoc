@@ -1,6 +1,6 @@
 = Speakers Service Guide
 Roman Tsypuk <tsypuk.conf@gmail.com>
-v1.0, April 16, 2017
+v1.1, May 13, 2017
 
 == Terminology
 * This is demo generated documentation based on Spring RestDocs.
@@ -10,9 +10,6 @@ v1.0, April 16, 2017
 
 === Morning@Lohika 2017
 include::lohika_morning.adoc[]
-
-//=== JEEconf 2017
-//include::jeeconf.adoc[]
 
 == Rest conventions
 include::rest_conv.adoc[]

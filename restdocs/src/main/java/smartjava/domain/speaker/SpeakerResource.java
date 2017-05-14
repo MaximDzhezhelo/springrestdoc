@@ -6,7 +6,6 @@ import org.springframework.hateoas.core.Relation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import smartjava.domain.topic.TopicController;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -25,6 +24,7 @@ public class SpeakerResource extends ResourceSupport {
         this.name = speaker.getName();
         this.company = speaker.getCompany();
         this.status = "I like morning@lohika \\0//";
+
         add(linkTo(methodOn(SpeakerController.class).getSpeaker(speaker.getId())).withSelfRel());
         add(linkTo(methodOn(SpeakerController.class).getSpeakerTopics(speaker.getId())).withRel("topics"));
     }

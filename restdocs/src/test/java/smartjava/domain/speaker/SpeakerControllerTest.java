@@ -2,6 +2,7 @@ package smartjava.domain.speaker;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,7 +42,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.snippet.Attributes.attributes;
 import static org.springframework.restdocs.snippet.Attributes.key;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -49,9 +49,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+//@Ignore
 @RunWith(SpringRunner.class)
 @SpringBootTest
-//@Ignore
 public class SpeakerControllerTest {
 
     @Autowired
@@ -105,7 +105,6 @@ public class SpeakerControllerTest {
                 .andExpect(jsonPath("$.company", is("Pivotal")))
                 .andDo(print());
 
-//        actions.andDo(document("{class-name}/{method-name}"));
         actions.andDo(document("{class-name}/{method-name}",
                 responseFields(
                         fieldWithPath("name").description("Speaker's name"),
