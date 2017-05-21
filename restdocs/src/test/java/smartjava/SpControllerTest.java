@@ -34,52 +34,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+/**
+ * This is a scratch for Live Coding Demo session.
+ */
 @Ignore
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@AutoConfigureMockMvc
-@AutoConfigureRestDocs(outputDir = "build/generated-snippets")
 public class SpControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private SpeakerRepository speakerRepository;
-
-    @After
-    public void tearDown() {
-        speakerRepository.deleteAll();
-    }
-
-    @Test
-    public void testGetSpeaker() throws Exception {
-        // Given
-        Speaker josh = Speaker.builder().name("Josh Long").company("Pivotal").build();
-        speakerRepository.save(josh);
-
-        // When
-        ResultActions actions = mockMvc.perform(get("/speakers/{id}", josh.getId()))
-                .andDo(print());
-
-        // Then
-        actions.andExpect(jsonPath("$.name", is("Josh Long")))
-                .andExpect(jsonPath("$.company", is("Pivotal")));
-
-        // Document
-        actions.andDo(document("{class-name}/{method-name}",
-                responseFields(
-                        fieldWithPath("name").description("The name of the speaker"),
-                        fieldWithPath("company").description("The company speaker is working on"),
-                        fieldWithPath("status").description("Hope only good one"),
-                        subsectionWithPath("_links").description("HATEOAS links")
-                ),
-                links(
-                        linkWithRel("self").description("Link to Speaker"),
-                        linkWithRel("topics").description("The topics speaker is working with")
-                )
-                ));
-
-    }
 
 }

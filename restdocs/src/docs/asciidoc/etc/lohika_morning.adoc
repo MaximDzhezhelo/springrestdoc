@@ -1,4 +1,30 @@
-morning@lohika
-May 20, 2017
+[NOTE]
+====
+Lviv, 20 May 2017 *_morning@lohika_*
+
+My presentations for Java Community on 3rd birthday of morning@lohika.
+
+Topic: "Test Driven Documentation with Spring Rest Docs"
 
 http://morning.lohika.com/news/3rd-birthday-morninglohika
+====
+
+What we have done on talk:
+====
+- [*] SpringFox Demo
+- [x] Swagger approaches and trade-offs
+- [x] Test Driven Development -> Test Driven Documentation
+- [x] Inside Spring Test mockMvc Framework
+- [x] Live Coding session - how to connect and start using SpringRestDocs
+====
+
+[IMPORTANT]
+====
+Thanks guys for joining my talk.
+
+You were awesome audience !!!
+
+I'm sure you enjoyed our live coding session.
+
+Happy Birthday morning@lohika, best wishes to you all !!!
+====

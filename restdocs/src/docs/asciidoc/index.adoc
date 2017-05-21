@@ -10,7 +10,6 @@
 //===== HTTP Response
 //====== Success HTTP responses
 //include::{snippets}/sp-controller-test/test-get-speaker/http-response.adoc[]
-//
 //====== Response fields
 //include::{snippets}/sp-controller-test/test-get-speaker/response-fields.adoc[]
 //====== HATEOAS links

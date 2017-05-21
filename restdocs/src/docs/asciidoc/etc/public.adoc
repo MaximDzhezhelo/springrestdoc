@@ -1,15 +1,14 @@
 = Speakers Service Guide
 Roman Tsypuk <tsypuk.conf@gmail.com>
-v1.1, May 13, 2017
+v1.2, May 20, 2017
+
+== My presentations and talks for Java communities about Spring Rest Docs
+=== Morning@Lohika 2017
+include::lohika_morning.adoc[]
 
 == Terminology
 * This is demo generated documentation based on Spring RestDocs.
 * All sources are available at github https://github.com/tsypuk/springrestdoc
-
-== My presentation for Java communities about Spring Rest Docs
-
-=== Morning@Lohika 2017
-include::lohika_morning.adoc[]
 
 == Rest conventions
 include::rest_conv.adoc[]
