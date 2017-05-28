@@ -3,6 +3,8 @@ Roman Tsypuk <tsypuk.conf@gmail.com>
 v1.2, May 20, 2017
 
 == My presentations and talks for Java communities about Spring Rest Docs
+===  JEEConf 2017
+include::jeeconf.adoc[]
 === Morning@Lohika 2017
 include::lohika_morning.adoc[]
 
