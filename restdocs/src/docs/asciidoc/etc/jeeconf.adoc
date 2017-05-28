@@ -1,4 +1,39 @@
 image::http://jeeconf.com/wp-content/themes/jeeconf/images/jee-logo.png[JEE Conf]
-May 26-27, 2017
+[NOTE]
+====
+Kiev, 27 May 2017 *_JEEConf_* the biggest Java conference in Eastern Europe.
+
+Topic: "Test Driven Documentation with Spring Rest Docs"
 
 http://jeeconf.com/program/test-driven-documentation-with-spring-rest-docs/[Test Driven Documentation with Spring Rest Docs. JEEConf 2017.]
+====
+
+[IMPORTANT]
+====
+It was an extra suprise to see retweets of my talk by pivotal's engineers
+*_@starbaxman Josh Long_* and *_@ankinson Andy Wilkinson_*
+
+Special thanks to you and your team, for Spring ecosystem.
+You are making this world better with every release. Keep going !!!
+====
+What we have done on talk:
+====
+- [*] SpringFox Demo
+- [x] Swagger approaches and trade-offs
+- [x] Test Driven Development -> Test Driven Documentation
+- [x] Live Coding session - how to connect and start using SpringRestDocs
+- [x] Spring Rest Docs features
+- [x] AsciiDoc is awesome (syntax, examples, extensions). Demo as ex. neo4j doc
+- [x] Migration of your project from Swagger to SpringRestDocs
+====
+
+[IMPORTANT]
+====
+I was so glad to see you on my talk.
+Your questions were robust and we made a real technical discussion after the talk.
+I enjoyed your questions and conversation with you guys.
+
+I see that live coding sessions are helping the audience to faster understand and follow the material. Hope you enjoied it.
+
+Start using SpringRestDocs and Test Driven Documentation in your teams!!!
+====
