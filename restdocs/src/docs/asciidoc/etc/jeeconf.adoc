@@ -6,6 +6,11 @@ Kiev, 27 May 2017 *_JEEConf_* the biggest Java conference in Eastern Europe.
 Topic: "Test Driven Documentation with Spring Rest Docs"
 
 http://jeeconf.com/program/test-driven-documentation-with-spring-rest-docs/[Test Driven Documentation with Spring Rest Docs. JEEConf 2017.]
+
+Video of talk is available on youtube:
+
+video::UE1W6-oCBMQ[youtube, title="SpringRestDoc on JEEConf2017 by Roman Tsypuk", width=640, height=480, opts="autoplay,loop",theme=light]
+
 ====
 
 [IMPORTANT]
