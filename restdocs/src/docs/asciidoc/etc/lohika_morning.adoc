@@ -10,7 +10,7 @@ http://morning.lohika.com/news/3rd-birthday-morninglohika
 
 Video of talk is available on youtube:
 
-video::xc54wrVeTyA[youtube, title="SpringRestDoc on morning@lohika 2017 by Roman Tsypuk", width=640, height=480, opts="autoplay,loop",theme=light]
+video::xc54wrVeTyA[youtube, title="SpringRestDoc on morning@lohika 2017 by Roman Tsypuk", width=640, height=480, theme=light]
 ====
 
 What we have done on talk:
