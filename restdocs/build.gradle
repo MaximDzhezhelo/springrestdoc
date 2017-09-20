@@ -1,10 +1,4 @@
 buildscript {
-    ext {
-        springBootVersion = '1.5.3.RELEASE'
-        asciiDoctorPluginVersion = '1.5.3'
-        asciiDoctorPdf = '1.5.0-alpha.11'
-        epubVersion = '1.5.0-alpha.6'
-    }
     repositories {
         jcenter()
         mavenCentral()
@@ -12,10 +6,10 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath("org.asciidoctor:asciidoctor-gradle-plugin:${asciiDoctorPluginVersion}")
-        classpath("org.asciidoctor:asciidoctorj-epub3:${epubVersion}")
-        classpath("org.asciidoctor:asciidoctorj-pdf:${asciiDoctorPdf}")
+        classpath "org.asciidoctor:asciidoctor-gradle-plugin:$asciiDoctorPluginVersion"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
+        classpath "org.asciidoctor:asciidoctorj-epub3:$epubVersion"
+        classpath "org.asciidoctor:asciidoctorj-pdf:$asciiDoctorPdf"
     }
 }
 
@@ -23,6 +17,9 @@ apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'org.asciidoctor.convert'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 version = '0.0.1'
 group = 'ua.in.smartjava.spring-rest-docs'
@@ -36,8 +33,8 @@ asciidoctor {
 //    backends = ['html5', 'pdf', 'epub3', 'docbook']
 // There is issue with epub3 in org.asciidoctor:asciidoctorj-epub3-1.5.0-alpha.6
 // It worked correctly with ascidoc 1.1
-//    backends = ['html5', 'pdf', 'docbook']
     backends = ['html5']
+//    backends = ['html5', 'pdf', 'docbook']
     options doctype: 'book'
 
     attributes = [
@@ -76,26 +73,23 @@ jar {
     }
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
 repositories {
     mavenCentral()
     jcenter()
 }
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    compile('org.springframework.boot:spring-boot-starter-hateoas')
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile 'org.springframework.restdocs:spring-restdocs-core:1.2.0.RELEASE'
-    compile 'com.h2database:h2:1.4.194'
-    compile('org.projectlombok:lombok')
+    compile "org.springframework.boot:spring-boot-starter-data-jpa"
+    compile "org.springframework.boot:spring-boot-starter-hateoas"
+    compile "org.springframework.boot:spring-boot-starter-web"
+    compile "org.springframework.restdocs:spring-restdocs-core:$restdocsVersion"
+    compile "com.h2database:h2:$h2Version"
+    compile "org.projectlombok:lombok"
 
-    testCompile('org.springframework.boot:spring-boot-starter-test')
-    asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor:1.2.0.RELEASE'
-    testCompile ('org.springframework.restdocs:spring-restdocs-mockmvc:1.2.0.RELEASE')
-    testCompile('com.jayway.jsonpath:json-path')
+    testCompile "org.springframework.boot:spring-boot-starter-test"
+    asciidoctor "org.springframework.restdocs:spring-restdocs-asciidoctor:$restdocsVersion"
+    testCompile "org.springframework.restdocs:spring-restdocs-mockmvc:$restdocsVersion"
+    testCompile "com.jayway.jsonpath:json-path"
 }
 
 task publish(type: GradleBuild) {
