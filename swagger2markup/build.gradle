@@ -20,12 +20,14 @@ buildscript {
 }
 
 apply plugin: 'java'
-apply plugin: 'spring-boot'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
 apply plugin: 'org.asciidoctor.convert'
 apply plugin: 'io.github.swagger2markup'
 apply plugin: 'io.spring.dependency-management'
 
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     jcenter()
