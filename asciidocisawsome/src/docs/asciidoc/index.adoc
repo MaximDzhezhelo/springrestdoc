@@ -1,8 +1,8 @@
-= Sample diagram
+== "Ditaa" extentions example
 
 :imagesdir: images
 
-== Lets create DB schema
+=== Lets create DB schema
 
 [ditaa, "Speaker database table"]
 ....
@@ -15,7 +15,7 @@
     |          |
     +----------+
 ....
-== Relation between Tables
+=== Relation between Tables
 [ditaa, "Relation"]
 ....
     +----------+
@@ -34,7 +34,7 @@
                         |          |
                         +----------+
 ....
-== Process diagram
+=== Process diagram
 [ditaa, "asciidoctor-diagram-process"]
 ....
                    +-------------+
@@ -54,7 +54,7 @@
      |          Lots of work             |
      +-----------------------------------+
 ....
-== Edge
+=== Edge
 [ditaa, "edge"]
 ....
 +---------+
@@ -65,7 +65,7 @@
 |    |    |
 +----+----+
 ....
-== Colors in primitive blocks
+=== Colors in primitive blocks
 This is example of creating the primitive blocks with
 specifying the fill color code.
 
@@ -82,7 +82,7 @@ specifying the fill color code.
 \----/ \----/
 ....
 
-== Color Codes
+=== Color Codes
 Also we can specify the color on text format or in hex.
 [ditaa, color codes]
 ....
@@ -95,7 +95,7 @@ Also we can specify the color on text format or in hex.
 \-------------+-------------/
 ....
 
-== Tags
+=== Tags
 Tags can change the figure display format.
 [ditaa, Tags]
 ....
@@ -118,7 +118,7 @@ Tags can change the figure display format.
 +-----+
 ....
 
-== Lines
+=== Lines
 Adding : we are creating the break-line.
 [ditaa, lines]
 ....
@@ -128,7 +128,7 @@ Adding : we are creating the break-line.
     v  \-=--+  +----+
 ....
 
-== Points market
+=== Points market
 '*' creates point markers
 [ditaa, Point markers]
 ....
@@ -139,7 +139,7 @@ Adding : we are creating the break-line.
 *----*
 ....
 
-== Text handling
+=== Text handling
 [ditaa, Text handling]
 ....
 /-----------------\
@@ -150,4 +150,78 @@ Adding : we are creating the break-line.
 | o Fix car       |
 | o Make website  |
 \-----------------/
+....
+
+== "Plantuml" extentions examples
+
+=== Class hierarchy diagram
+[plantuml, diagram-classes, png]
+....
+class ResultActions
+class MvcResult
+class MockHttpServletResponse
+class MockHttpServletRequest
+
+ResultActions <|-- MvcResult
+MvcResult <|-- MockHttpServletResponse
+MvcResult <|-- MockHttpServletRequest
+....
+
+=== Component diagram
+[plantuml,"demo",png]
+--
+artifact ".adoc-File" as adoc
+artifact ".html-File" as html
+artifact ".pdf-File" as pdf
+artifact ".epub-File" as epub3
+component asciidoctor
+adoc -> asciidoctor
+asciidoctor -down-> html
+asciidoctor -down-> pdf
+asciidoctor -down-> epub3
+--
+
+=== Interface and classes
+[plantuml, abstract-list-example, png]
+....
+interface BaseInterface
+interface ChildInterface
+class FirstImpl
+class SecondImpl
+
+BaseInterface <|-- ChildInterface
+ChildInterface <|.. FirstImpl
+ChildInterface <|.. SecondImpl
+....
+
+=== Auth flow diagram
+[plantuml, sequence-example, png]
+....
+Alice -> Bob: Authentication Request
+Bob --> Alice: Authentication Response
+Bob -> AuthServer: validate&auth user
+AuthServer --> Bob: generated Token
+
+Bob -> Microservice1: restAPI call
+Microservice1 --> Bob: resource response
+
+Microservice1 -> Microservice2
+Microservice2 --> Microservice1
+
+Alice -> Bob: Another authentication Request
+Alice <-- Bob: another authentication Response
+....
+
+=== Components interaction
+[plantuml, "component-overview", png]
+....
+component "HTTP Server" as server
+component "HTTP Client" as client
+component "Java Application" as app
+
+client -> HTTP : use
+HTTP - server
+server - servlet.api
+
+app --> servlet.api : use
 ....
